@@ -1,26 +1,60 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/* ─── Global Tokens ──────────────────────────────────────── */
+@media (prefers-color-scheme: light) {
+  :root {
+    --background: #E8E8E8;
+    --foreground: #000000;
+    --case-glow: #7B5C8A;
+    --enter-lettering: #161618;
+  }
 }
 
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #09090f;
+    --foreground: #ededed;
+    --case-glow: #4a1f8c;
+    --enter-lettering: #e8e0f5;
+  }
+}
+
+/* ─── Tailwind Theme Bridge ──────────────────────────────── */
 @theme inline {
+  --font-stratumno2: 'stratumno2', sans-serif;
+  --color-case-glow: var(--case-glow);
+  --color-enter-lettering: var(--enter-lettering);
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
 
 body {
+  overflow: hidden;
   background: var(--background);
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
+}
+
+@font-face {
+  font-family: 'stratumno2';
+  src: url('../fonts/stratumno2_bold.otf') format('opentype');
+  font-weight: 700;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'stratumno2';
+  src: url('../fonts/stratumno2_regular.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'stratumno2';
+  src: url('../fonts/stratumno2_light.otf') format('opentype');
+  font-weight: 300;
+  font-style: normal;
 }
