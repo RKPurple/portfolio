@@ -2,24 +2,32 @@
 
 import { AnimatePresence, motion } from 'framer-motion'
 import { enterOverlayVariants, heroVariants } from '@/lib/animations'
-import { useEnter } from '@/context/EnterContext'
+import { usePhase } from '@/context/EnterContext'
 import EnterOverlay from '@/components/sections/EnterOverlay'
+import CaseSpinSection from '@/components/sections/CaseSpinSection'
 import HeroSection from '@/components/sections/HeroSection'
 
 export default function Page() {
-  const { entered, setEntered } = useEnter()
+  const { phase, setPhase } = usePhase()
 
   return (
-    <AnimatePresence mode="wait">
-      {!entered ? (
-        <motion.div key="enter" variants={enterOverlayVariants} initial="initial" animate="animate" exit="exit">
-          <EnterOverlay onEnter={() => setEntered(true)} />
-        </motion.div>
-      ) : (
-        <motion.div key="hero" variants={heroVariants} initial="initial" animate="animate">
-          <HeroSection />
-        </motion.div>
+    <>
+      {/* Enter Overlay */}
+      {(phase === 'idle' || phase === 'spinning') && (
+        <EnterOverlay onEnter={() => setPhase('spinning')} />
       )}
-    </AnimatePresence>
+
+      {/* Case Spin Section */}
+      {phase === 'spinning' && <CaseSpinSection />}
+
+      {/* Hero Section */}
+      <AnimatePresence>
+        {phase === 'completed' && (
+          <motion.div key="hero" variants={heroVariants} initial="initial" animate="animate">
+            <HeroSection />
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </>
   )
 }

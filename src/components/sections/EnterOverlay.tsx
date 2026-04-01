@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { motion, useAnimation } from 'framer-motion';
+import { usePhase } from '@/context/EnterContext';
 
 interface EnterOverlayProps {
     onEnter: () => void;
@@ -17,10 +18,12 @@ const HINTS = [
 function EnterOverlay({ onEnter }: EnterOverlayProps) {
     const [mousePos, setMousePos] = useState({ x: -100, y: -100 });
     const [isHoveringCase, setIsHoveringCase] = useState(false);
-    const shakeControls = useAnimation();
     const [showHint, setShowHint] = useState(false);
     const [displayedText, setDisplayedText] = useState('');
     const [hintIndex, setHintIndex] = useState(0);
+    const { phase } = usePhase()
+    const isBackground = phase === 'spinning'
+    const shakeControls = useAnimation();
 
     useEffect(() => {
         const handleMouseMove = (e: MouseEvent) => {
@@ -40,7 +43,7 @@ function EnterOverlay({ onEnter }: EnterOverlayProps) {
     }, [isHoveringCase]);
 
     useEffect(() => {
-        const timeout = setTimeout(() => setShowHint(true), 2500);
+        const timeout = setTimeout(() => setShowHint(true), 500);
         return () => clearTimeout(timeout);
     }, []);
 
@@ -80,24 +83,27 @@ function EnterOverlay({ onEnter }: EnterOverlayProps) {
     }, [showHint, hintIndex]);
 
     return (
-        <div className="flex flex-col items-center justify-center h-screen gap-8 cursor-none">
-            {/* Key cursor */}
-            <picture>
-                <source srcSet="/cases/dreams_nightmares_key.png" media="(prefers-color-scheme: light)" />
-                <img
-                    src='/cases/shattered_web_key.png'
-                    alt=''
-                    aria-hidden
-                    className='fixed pointer-events-none z-50 h-[4vw] w-auto'
-                    style={{ left: mousePos.x, top: mousePos.y, transform: 'translate(-20%, -80%)' }}
-                />
-            </picture>
-
-            <p className="font-stratumno2 text-lg text-enter-lettering tracking-widest uppercase">
-                {showHint ? displayedText : '\u00A0'}
-                {showHint && displayedText.length < HINTS[hintIndex % HINTS.length].length && <span className="animate-pulse">_</span>}
-            </p>
-
+        <div className="flex flex-col items-center justify-center h-screen gap-8 md:cursor-none">
+            {!isBackground && (
+                <>
+                    {/* Key cursor */}
+                    <picture className='hidden md:block'>
+                        <source srcSet="/cases/dreams_nightmares_key.png" media="(prefers-color-scheme: light)" />
+                        <img
+                            src='/cases/shattered_web_key.png'
+                            alt=''
+                            aria-hidden
+                            className='fixed pointer-events-none z-50 h-[4vw] w-auto'
+                            style={{ left: mousePos.x, top: mousePos.y, transform: 'translate(-20%, -80%)' }}
+                            />
+                    </picture>
+                    {/* Hint text */}
+                    <p className="font-stratumno2 text-md md:text-lg text-enter-lettering tracking-widest uppercase">
+                        {showHint ? displayedText : '\u00A0'}
+                        {showHint && displayedText.length < HINTS[hintIndex % HINTS.length].length && <span className="animate-pulse">_</span>}
+                    </p>
+                </>
+            )}
             <div className="relative flex items-center justify-center">
                 {/* Purple glow behind case */}
                 <motion.div
@@ -107,14 +113,15 @@ function EnterOverlay({ onEnter }: EnterOverlayProps) {
                 />
                 <button
                     onClick={onEnter}
+                    disabled={isBackground}
                     onMouseEnter={() => setIsHoveringCase(true)}
                     onMouseLeave={() => setIsHoveringCase(false)}
-                    className={`relative transition-opacity hover:opacity-85 ${isHoveringCase ? 'cursor-none' : 'cursor-default'}`}
+                    className={`relative transition-opacity hover:opacity-85 ${isHoveringCase ? 'cursor-none' : 'cursor-default'} ${isBackground ? 'opacity-15' : 'hover:opacity-86'}`}
                 >
                     <motion.div animate={shakeControls}>
                         <picture>
                             <source srcSet="/cases/dreams_nightmares_case.png" media="(prefers-color-scheme: light)" />
-                            <img src='/cases/shattered_web_case.png' alt='Shattered Web Case' className='h-[35vw] w-auto' />
+                            <img src='/cases/shattered_web_case.png' alt='Shattered Web Case' className='h-[60vw] sm: h-[45vw] md:h-[35vw] w-auto' />
                         </picture>
                     </motion.div>
                 </button>

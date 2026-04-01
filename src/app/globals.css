@@ -19,6 +19,15 @@
   }
 }
 
+/* CS Case Colors */
+:root {
+  --cs-gold: #FFE500;
+  --cs-red: #EB4B4B;
+  --cs-pink: #D32CE6;
+  --cs-purple: #8847FF;
+  --cs-blue: #4B69FF;
+}
+
 /* ─── Tailwind Theme Bridge ──────────────────────────────── */
 @theme inline {
   --font-stratumno2: 'stratumno2', sans-serif;
@@ -28,6 +37,12 @@
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+
+  --color-cs-gold: var(--cs-gold);
+  --color-cs-red: var(--cs-red);
+  --color-cs-pink: var(--cs-pink);
+  --color-cs-purple: var(--cs-purple);
+  --color-cs-blue: var(--cs-blue);
 }
 
 
