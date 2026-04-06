@@ -7,6 +7,7 @@ export type SocialLink = {
     label: string
     href: string
     icon: IconType
+    hoverColor: string
     enabled: boolean
 }
 
@@ -16,6 +17,7 @@ export const SOCIAL_LINKS: SocialLink[] = [
         label: 'GitHub',
         href: 'https://github.com/RKPurple',
         icon: FaGithub,
+        hoverColor: 'var(--social-dock-github)',
         enabled: true,
     },
     {
@@ -23,6 +25,7 @@ export const SOCIAL_LINKS: SocialLink[] = [
         label: 'LinkedIn',
         href: 'https://linkedin.com/in/rohankallur',
         icon: FaLinkedin,
+        hoverColor: 'var(--social-dock-linkedin)',
         enabled: true,
     },
     {
@@ -30,6 +33,7 @@ export const SOCIAL_LINKS: SocialLink[] = [
         label: 'Resume',
         href: '/assets/resume.pdf',
         icon: HiOutlineDocumentText,
+        hoverColor: 'var(--social-dock-resume)',
         enabled: true,
     },
     {
@@ -37,6 +41,7 @@ export const SOCIAL_LINKS: SocialLink[] = [
         label: 'Email',
         href: 'mailto:placeholder@email.com',
         icon: HiOutlineMail,
+        hoverColor: 'var(--social-dock-email)',
         enabled: false, // flip to true when contact section is decided
     },
 ]

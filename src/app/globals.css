@@ -19,13 +19,19 @@
   }
 }
 
-/* CS Case Colors */
 :root {
+  /* CS Case Colors */
   --cs-gold: #FFE500;
   --cs-red: #EB4B4B;
   --cs-pink: #D32CE6;
   --cs-purple: #8847FF;
   --cs-blue: #4B69FF;
+
+  /* Social Dock Colors */
+  --social-dock-github: #0FBF3E;
+  --social-dock-linkedin: #0072B1;
+  --social-dock-resume: #9B59B6;
+  --social-dock-email: #ffffff;
 }
 
 /* ─── Tailwind Theme Bridge ──────────────────────────────── */
