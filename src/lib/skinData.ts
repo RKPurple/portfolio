@@ -12,7 +12,7 @@ export const RARITY_COLORS: Record<RarityId, string> = {
 
 export type Card = {
   rarity?: RarityId
-  image: string
+  image?: string
   type?: SpecialCardType
 }
 
@@ -26,6 +26,6 @@ export const FILLER_SKINS: Record<RarityId, string[]> = {
 
 export const SPECIAL_CARDS: Card[] = [
   { type: 'nameplate',  image: '/Email_Logo.png' },
-  { type: 'socialdock', image: '/Github_Logo.png' },
+  { type: 'socialdock'},
   { type: 'nav',        image: '/LinkedIn_Logo.png' },
 ]

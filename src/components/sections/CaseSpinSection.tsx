@@ -5,6 +5,7 @@ import { motion, useAnimate } from 'framer-motion'
 import { usePhase } from '@/context/EnterContext'
 import { reelSpinEasing } from '@/lib/animations'
 import { type Card, type RarityId, FILLER_SKINS, SPECIAL_CARDS, RARITY_COLORS } from '@/lib/skinData'
+import SocialDock from '@/components/layout/SocialDock'
 
 const CARD_GAP = 8
 const CARD_COUNT = 60
@@ -55,7 +56,7 @@ export default function CaseSpinSection() {
     }, [])
 
     return (
-        <div className="fixed inset-0 flex items-center justify-center z-50">
+        <div className="fixed inset-0 flex items-center justify-center z-50 pointer-events-none">
             {/* Flash */}
             <motion.div
                 className="absolute inset-0 bg-white/50 pointer-events-none z-10"
@@ -77,12 +78,18 @@ export default function CaseSpinSection() {
                                 className="relative flex-shrink-0 bg-[#3a3a3a] h-20 md:h-40"
                                 style={{ width: cardWidth }}
                             >
-                                <img
-                                    src={card.image}
-                                    alt=""
-                                    aria-hidden
-                                    className="absolute inset-0 w-full h-full object-contain p-2"
-                                />
+                                {card.type === 'socialdock' ? (
+                                    <div className="absolute inset-0 flex items-center justify-center p-2">
+                                        <SocialDock />
+                                    </div>
+                                ) : (
+                                    <img
+                                        src={card.image}
+                                        alt=""
+                                        aria-hidden
+                                        className="absolute inset-0 w-full h-full object-contain p-2"
+                                    />
+                                )}
                                 {/* Rarity gradient */}
                                 <div
                                     className="absolute bottom-0 left-0 right-0 h-5 md:h-10"
