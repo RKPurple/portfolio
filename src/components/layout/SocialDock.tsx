@@ -10,32 +10,44 @@ function resolveColor(color: string): string {
     return getComputedStyle(document.documentElement).getPropertyValue(varName).trim()
 }
 
-export default function SocialDock() {
+type Props = {
+    rarityColor?: string
+}
+
+export default function SocialDock({ rarityColor }: Props) {
     return (
-        <motion.div
-            layoutId="social-dock"
-            className="flex flex-row items-center gap-4"
-        >
-            {SOCIAL_LINKS.filter(link => link.enabled).map(link => {
-                const Icon = link.icon
-                return (
-                    <motion.a
-                        key={link.id}
-                        href={link.href}
-                        target={link.id === 'email' ? '_self' : '_blank'}
-                        rel="noopener noreferrer"
-                        aria-label={link.label}
-                        style={{ color: 'rgba(255,255,255,0.4)' }}
-                        whileHover={{ scale: 1.5, color: resolveColor(link.hoverColor) }}
-                        transition={{ 
-                            scale: { type: 'spring', stiffness: 400, damping: 20 },
-                            color: { type: 'tween', duration: 0.15, ease: 'easeInOut' }
-                        }}
-                    >
-                        <Icon size={30} />
-                    </motion.a>
-                )
-            })}
-        </motion.div>
+        <div className="flex flex-col gap-3">
+            <div className="flex flex-row items-center gap-3">
+                {SOCIAL_LINKS.map(link => {
+                    const Icon = link.icon
+                    return (
+                        <motion.a
+                            key={link.id}
+                            href={link.href}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            aria-label={link.label}
+                            style={{ color: '#F2F0EF' }}
+                            whileHover={{ scale: 1.5, color: resolveColor(link.hoverColor) }}
+                            transition={{
+                                scale: { type: 'spring', stiffness: 400, damping: 20 },
+                                color: { type: 'tween', duration: 0.15, ease: 'easeInOut' }
+                            }}
+                        >
+                            <Icon size={35} />
+                        </motion.a>
+                    )
+                })}
+            </div>
+            {rarityColor && (
+                <motion.div
+                    className="h-1"
+                    style={{ backgroundColor: rarityColor, transformOrigin: 'left' }}
+                    initial={{ scaleX: 0 }}
+                    animate={{ scaleX: 1 }}
+                    transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1], delay: 1.5 }}
+                />
+            )}
+        </div>
     )
 }

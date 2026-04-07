@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { EnterProvider } from '@/context/EnterContext'
 import "./globals.css";
 import AppShell from '@/components/layout/AppShell'
+import { LayoutGroup } from "framer-motion";
 
 export const metadata: Metadata = {
   title: "Rohan's Portfolio",
@@ -17,8 +18,8 @@ export default function RootLayout({
     <html lang="en">
       <body>
         <EnterProvider>
-          <AppShell />
           {children}
+          <AppShell />
         </EnterProvider>
       </body>
     </html>

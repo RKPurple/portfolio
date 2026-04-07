@@ -13,12 +13,16 @@ export default function Page() {
   return (
     <>
       {/* Enter Overlay */}
-      {(phase === 'idle' || phase === 'spinning') && (
-        <EnterOverlay onEnter={() => setPhase('spinning')} />
-      )}
+      <AnimatePresence>
+        {(phase === 'idle' || phase === 'spinning') && (
+          <EnterOverlay key="enter" onEnter={() => setPhase('spinning')} />
+        )}
+      </AnimatePresence>
 
       {/* Case Spin Section */}
-      {phase === 'spinning' && <CaseSpinSection />}
+      <AnimatePresence>
+        {phase === 'spinning' && <CaseSpinSection key="spin" />}
+      </AnimatePresence>
 
       {/* Hero Section */}
       <AnimatePresence>

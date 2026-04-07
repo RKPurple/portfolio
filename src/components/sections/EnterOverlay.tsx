@@ -83,7 +83,11 @@ function EnterOverlay({ onEnter }: EnterOverlayProps) {
     }, [showHint, hintIndex]);
 
     return (
-        <div className="flex flex-col items-center justify-center h-screen gap-8 md:cursor-none">
+        <motion.div
+            className="flex flex-col items-center justify-center h-screen gap-8 md:cursor-none"
+            exit={{ opacity: 0, y: 80 }}
+            transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+        >
             {!isBackground && (
                 <>
                     {/* Key cursor */}
@@ -116,7 +120,7 @@ function EnterOverlay({ onEnter }: EnterOverlayProps) {
                     disabled={isBackground}
                     onMouseEnter={() => setIsHoveringCase(true)}
                     onMouseLeave={() => setIsHoveringCase(false)}
-                    className={`relative transition-opacity hover:opacity-85 ${isHoveringCase ? 'cursor-none' : 'cursor-default'} ${isBackground ? 'opacity-15' : 'hover:opacity-86'}`}
+                    className={`relative transition-opacity hover:opacity-85 ${isHoveringCase ? 'cursor-none' : 'cursor-default'} ${isBackground ? 'opacity-15 pointer-events-none' : 'hover:opacity-86'}`}
                 >
                     <motion.div animate={shakeControls}>
                         <picture>
@@ -126,7 +130,7 @@ function EnterOverlay({ onEnter }: EnterOverlayProps) {
                     </motion.div>
                 </button>
             </div>
-        </div>
+        </motion.div>
     )
 }
 
