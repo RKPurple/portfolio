@@ -105,7 +105,7 @@ export default function CaseSpinSection() {
     return (
         <motion.div
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.3 }}
+            transition={{ duration: 0.7, delay: 1.4 }}
             className="fixed inset-0 flex items-center justify-center z-40 pointer-events-none"
         >
             {/* Flash */}

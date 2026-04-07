@@ -13,7 +13,7 @@ type Props = {
 }
 
 const SPRING = { type: 'spring', stiffness: 120, damping: 22, mass: 1 } as const
-const FADE_DURATION = 0.15
+const FADE_DURATION = 0.35
 const FADE_DELAY = 0.50
 
 export default function MorphCard({ type, heroTop, heroLeft, children }: Props) {
