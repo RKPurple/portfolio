@@ -46,6 +46,11 @@ function SpecialCardContent({ type, iconSize, image }: { type: SpecialCardType, 
             </div>
         )
     }
+    if (type === 'pictureframe') {
+        return (
+            <img src="/assets/portrait.jpg" alt="Rohan" className="w-full h-full object-cover" />
+        )
+    }
     // nameplate and nav fall back to image
     if (image) {
         return (

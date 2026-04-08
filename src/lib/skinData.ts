@@ -1,4 +1,4 @@
-export type SpecialCardType = 'nameplate' | 'socialdock' | 'nav'
+export type SpecialCardType = 'nameplate' | 'socialdock' | 'nav' | 'pictureframe'
 
 export type RarityId = 'blue' | 'purple' | 'pink' | 'red' | 'gold'
 
@@ -25,7 +25,7 @@ export const FILLER_SKINS: Record<RarityId, string[]> = {
 }
 
 export const SPECIAL_CARDS: Card[] = [
-  { type: 'nameplate',  image: '/Email_Logo.png' },
+  { type: 'pictureframe' },
   { type: 'socialdock'},
   { type: 'nav',        image: '/LinkedIn_Logo.png' },
 ]
