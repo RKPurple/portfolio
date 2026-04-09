@@ -19,7 +19,7 @@ export default function AppShell() {
                 <MorphCard type="pictureframe" heroTop={100} heroLeft={32}>
                     <PictureFrame rarityColor={specialCardsRarities?.pictureframe} />
                 </MorphCard>
-                <MorphCard type="nav" heroTop={32} heroLeft={window.innerWidth - 250}>
+                <MorphCard type="nav" heroTop={32} heroLeft={window.innerWidth - 350}>
                     <NavDock rarityColor={specialCardsRarities?.nav} />
                 </MorphCard>
                 </>

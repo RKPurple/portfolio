@@ -52,17 +52,17 @@ export const SOCIAL_LINKS: SocialLink[] = [
 export const NAV_LINKS: NavLink[] = [
     {
         id: 'home',
-        label: 'Home',
+        label: 'HOME',
         href: '/',
     },
     {
         id: 'projects',
-        label: 'Projects',
+        label: 'PROJECTS',
         href: '/projects',
     },
     {
         id: 'contact',
-        label: 'Contact',
+        label: 'CONTACT',
         href: '/contacts',
     }
 ]

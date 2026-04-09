@@ -7,6 +7,7 @@
     --foreground: #000000;
     --case-glow: #7B5C8A;
     --enter-lettering: #161618;
+    --link-color: #3C3A38;
   }
 }
 
@@ -16,6 +17,7 @@
     --foreground: #ededed;
     --case-glow: #4a1f8c;
     --enter-lettering: #e8e0f5;
+    --link-color: #C8C8D0;
   }
 }
 
@@ -41,6 +43,7 @@
   --color-enter-lettering: var(--enter-lettering);
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  --color-link: var(--link-color);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 
@@ -51,6 +54,16 @@
   --color-cs-blue: var(--cs-blue);
 }
 
+
+@utility font-nav {
+  @media (prefers-color-scheme: dark) {
+    font-family: 'dotrice', sans-serif;
+  }
+
+  @media (prefers-color-scheme: light) {
+    font-family: 'Daubenton', sans-serif;
+  }
+}
 
 body {
   overflow: hidden;
@@ -77,5 +90,19 @@ body {
   font-family: 'stratumno2';
   src: url('../fonts/stratumno2_light.otf') format('opentype');
   font-weight: 300;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Daubenton';
+  src: url('../fonts/Daubenton.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'dotrice';
+  src: url('../fonts/dotrice.bold.otf') format('opentype');
+  font-weight: 700;
   font-style: normal;
 }

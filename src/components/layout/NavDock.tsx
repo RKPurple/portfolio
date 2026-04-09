@@ -19,7 +19,7 @@ type Props = {
 export default function NavDock({ rarityColor }: Props) {
     const pathname = usePathname()
     return (
-        <nav className="flex flex-row items-center gap-2">
+        <nav className="flex flex-row items-center gap-5 font-nav text-xl text-link-color">
             {NAV_LINKS.map(link => {
                 const isActive = pathname === link.href
                 return (
@@ -29,11 +29,11 @@ export default function NavDock({ rarityColor }: Props) {
                         whileHover={{ y: -4 }}
                         transition={{ type: 'spring', stiffness: 400, damping: 20 }}
                     >
-                        <Link href={link.href} style={{ color: '#F2F0EF' }}>
+                        <Link href={link.href}>
                             {link.label}
                         </Link>
                         <motion.div
-                            className="h-[2px]"
+                            className="h-1"
                             style={{ backgroundColor: rarityColor ?? 'transparent', transformOrigin: 'left' }}
                             initial={{ scaleX: 0 }}
                             animate={{ scaleX: isActive && rarityColor ? 1 : 0 }}
