@@ -10,6 +10,13 @@ export type SocialLink = {
     hoverColor: string
 }
 
+export type NavLink = {
+    id: string
+    label: string
+    href: string
+    icon?: IconType
+}
+
 export const SOCIAL_LINKS: SocialLink[] = [
     {
         id: 'github',
@@ -40,4 +47,22 @@ export const SOCIAL_LINKS: SocialLink[] = [
     //     hoverColor: 'var(--social-dock-email)',
     //     enabled: false, // flip to true when contact section is decided
     // },
+]
+
+export const NAV_LINKS: NavLink[] = [
+    {
+        id: 'home',
+        label: 'Home',
+        href: '/',
+    },
+    {
+        id: 'projects',
+        label: 'Projects',
+        href: '/projects',
+    },
+    {
+        id: 'contact',
+        label: 'Contact',
+        href: '/contacts',
+    }
 ]

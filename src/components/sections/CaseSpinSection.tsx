@@ -5,7 +5,7 @@ import { motion, useAnimate, usePresence } from 'framer-motion'
 import { usePhase } from '@/context/EnterContext'
 import { reelSpinEasing } from '@/lib/animations'
 import { type Card, type RarityId, FILLER_SKINS, SPECIAL_CARDS, RARITY_COLORS, type SpecialCardType } from '@/lib/skinData'
-import { SOCIAL_LINKS } from '@/lib/data'
+import { SOCIAL_LINKS, NAV_LINKS } from '@/lib/data'
 
 const CARD_GAP = 8
 const CARD_COUNT = 60
@@ -49,6 +49,20 @@ function SpecialCardContent({ type, iconSize, image }: { type: SpecialCardType, 
     if (type === 'pictureframe') {
         return (
             <img src="/assets/portrait.jpg" alt="Rohan" className="w-full h-full object-cover" />
+        )
+    }
+    if (type === 'nav') {
+        return (
+            <div className="flex flex-col items-start gap-1">
+                {NAV_LINKS.map(link => (
+                    <span
+                        key={link.id}
+                        className='text-md text-enter-lettering'
+                    >
+                        {link.label}
+                    </span>
+                ))}
+            </div>
         )
     }
     // nameplate and nav fall back to image

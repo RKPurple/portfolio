@@ -27,5 +27,5 @@ export const FILLER_SKINS: Record<RarityId, string[]> = {
 export const SPECIAL_CARDS: Card[] = [
   { type: 'pictureframe' },
   { type: 'socialdock'},
-  { type: 'nav',        image: '/LinkedIn_Logo.png' },
+  { type: 'nav'},
 ]
