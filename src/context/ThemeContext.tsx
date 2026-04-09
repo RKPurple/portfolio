@@ -7,6 +7,7 @@ import {
     useLayoutEffect,
     useMemo,
     useState,
+    useSyncExternalStore,
     type ReactNode,
 } from 'react'
 
@@ -62,4 +63,28 @@ export function useTheme() {
     const ctx = useContext(ThemeContext)
     if (!ctx) throw new Error('useTheme must be used within ThemeProvider')
     return ctx
+}
+
+function subscribeHtmlThemeClass(onChange: () => void) {
+    const el = document.documentElement
+    const observer = new MutationObserver(onChange)
+    observer.observe(el, { attributes: true, attributeFilter: ['class'] })
+    return () => observer.disconnect()
+}
+
+function getIsLightFromHtmlSnapshot() {
+    return document.documentElement.classList.contains('light')
+}
+
+function getServerIsLightSnapshot() {
+    return false
+}
+
+/** For assets that must follow `html.light` immediately; context can lag SSR/hydration. */
+export function useIsLightModeFromHtml(): boolean {
+    return useSyncExternalStore(
+        subscribeHtmlThemeClass,
+        getIsLightFromHtmlSnapshot,
+        getServerIsLightSnapshot,
+    )
 }

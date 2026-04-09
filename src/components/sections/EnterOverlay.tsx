@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { motion, useAnimation } from 'framer-motion';
 import { usePhase } from '@/context/EnterContext';
-import { useTheme } from '@/context/ThemeContext';
+import { useIsLightModeFromHtml } from '@/context/ThemeContext';
 
 interface EnterOverlayProps {
     onEnter: () => void;
@@ -23,10 +23,10 @@ function EnterOverlay({ onEnter }: EnterOverlayProps) {
     const [displayedText, setDisplayedText] = useState('');
     const [hintIndex, setHintIndex] = useState(0);
     const { phase } = usePhase()
-    const { theme } = useTheme()
+    const isLight = useIsLightModeFromHtml()
     const isBackground = phase === 'spinning'
-    const keySrc = theme === 'light' ? '/cases/dreams_nightmares_key.png' : '/cases/shattered_web_key.png'
-    const caseSrc = theme === 'light' ? '/cases/dreams_nightmares_case.png' : '/cases/shattered_web_case.png'
+    const keySrc = isLight ? '/cases/dreams_nightmares_key.png' : '/cases/shattered_web_key.png'
+    const caseSrc = isLight ? '/cases/dreams_nightmares_case.png' : '/cases/shattered_web_case.png'
     const shakeControls = useAnimation();
 
     useEffect(() => {
@@ -96,6 +96,7 @@ function EnterOverlay({ onEnter }: EnterOverlayProps) {
                 <>
                     {/* Key cursor */}
                     <img
+                        key={keySrc}
                         src={keySrc}
                         alt=""
                         aria-hidden
@@ -126,8 +127,9 @@ function EnterOverlay({ onEnter }: EnterOverlayProps) {
                 >
                     <motion.div animate={shakeControls}>
                         <img
+                            key={caseSrc}
                             src={caseSrc}
-                            alt="Shattered Web Case"
+                            alt="Weapon case"
                             suppressHydrationWarning
                             className="h-[60vw] sm: h-[45vw] md:h-[35vw] w-auto"
                         />

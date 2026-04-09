@@ -41,7 +41,7 @@ function SpecialCardContent({ type, iconSize, image }: { type: SpecialCardType, 
         return (
             <div className="flex flex-row items-center gap-3">
                 {SOCIAL_LINKS.map(link => (
-                    <span key={link.id} className="inline-block" style={{ color: 'rgba(242,240,239,1)' }}>
+                    <span key={link.id} className="inline-block" style={{ color: 'var(--link-color)' }}>
                         <HalftoneMaskIcon src={link.maskSrc} size={iconSize} />
                     </span>
                 ))}
@@ -59,7 +59,7 @@ function SpecialCardContent({ type, iconSize, image }: { type: SpecialCardType, 
                 {NAV_LINKS.map(link => (
                     <span
                         key={link.id}
-                        className='text-md text-enter-lettering'
+                        className='text-md font-nav'
                     >
                         {link.label}
                     </span>
