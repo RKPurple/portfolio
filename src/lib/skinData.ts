@@ -1,4 +1,4 @@
-export type SpecialCardType = 'nameplate' | 'socialdock' | 'nav' | 'pictureframe'
+export type SpecialCardType = 'themebutton' | 'socialdock' | 'nav' | 'pictureframe'
 
 export type RarityId = 'blue' | 'purple' | 'pink' | 'red' | 'gold'
 
@@ -28,4 +28,5 @@ export const SPECIAL_CARDS: Card[] = [
   { type: 'pictureframe' },
   { type: 'socialdock'},
   { type: 'nav'},
+  { type: 'themebutton'},
 ]

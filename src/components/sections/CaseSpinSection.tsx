@@ -5,6 +5,7 @@ import { motion, useAnimate, usePresence } from 'framer-motion'
 import { usePhase } from '@/context/EnterContext'
 import { reelSpinEasing } from '@/lib/animations'
 import { type Card, type RarityId, FILLER_SKINS, SPECIAL_CARDS, RARITY_COLORS, type SpecialCardType } from '@/lib/skinData'
+import { useTheme } from '@/context/ThemeContext'
 import HalftoneMaskIcon from '@/components/icons/HalftoneMaskIcon'
 import { SOCIAL_LINKS, NAV_LINKS } from '@/lib/data'
 
@@ -37,6 +38,7 @@ function generateCards(): (Card & { rarity: RarityId })[] {
 
 // Static card content per special card type
 function SpecialCardContent({ type, iconSize, image }: { type: SpecialCardType, iconSize: number, image?: string }) {
+    const { theme } = useTheme()
     if (type === 'socialdock') {
         return (
             <div className="flex flex-row items-center gap-3">
@@ -64,6 +66,15 @@ function SpecialCardContent({ type, iconSize, image }: { type: SpecialCardType, 
                         {link.label}
                     </span>
                 ))}
+            </div>
+        )
+    }
+    if (type === 'themebutton') {
+        return (
+            <div className="font-theme-toggle relative z-10 flex items-center justify-center bg-theme-bg text-center text-theme-text text-base uppercase tracking-widest rounded px-4 py-2.5">
+                <span className="text-md font-theme-toggle">
+                    {theme === 'dark' ? 'Light' : 'Dark'}
+                </span>
             </div>
         )
     }

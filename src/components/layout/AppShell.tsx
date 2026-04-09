@@ -5,6 +5,7 @@ import MorphCard from '@/components/layout/MorphCard'
 import SocialDock from '@/components/layout/SocialDock'
 import PictureFrame from '@/components/layout/PictureFrame'
 import NavDock from '@/components/layout/NavDock'
+import ThemeToggle from '@/components/layout/ThemeToggle'
 
 export default function AppShell() {
     const { phase, specialCardsRarities } = usePhase()
@@ -21,6 +22,9 @@ export default function AppShell() {
                 </MorphCard>
                 <MorphCard type="nav" heroTop={32} heroLeft={window.innerWidth - 350}>
                     <NavDock rarityColor={specialCardsRarities?.nav} />
+                </MorphCard>
+                <MorphCard type="themebutton" heroTop={window.innerHeight - 50} heroLeft={window.innerWidth - 100}>
+                    <ThemeToggle rarityColor={specialCardsRarities?.themebutton} />
                 </MorphCard>
                 </>
             )}

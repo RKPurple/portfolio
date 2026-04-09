@@ -7,6 +7,9 @@ html.light {
   --case-glow: #7B5C8A;
   --enter-lettering: #161618;
   --link-color: #3C3A38;
+
+  --theme-bg: #09090F;
+  --theme-text: #C8C8D0;
 }
 
 html.dark {
@@ -15,6 +18,9 @@ html.dark {
   --case-glow: #4a1f8c;
   --enter-lettering: #e8e0f5;
   --link-color: #C8C8D0;
+
+  --theme-bg: #E8E8E8;
+  --theme-text: #3C3A38;
 }
 
 :root {
@@ -34,12 +40,14 @@ html.dark {
 
 /* ─── Tailwind Theme Bridge ──────────────────────────────── */
 @theme inline {
-  --font-stratumno2: 'stratumno2', sans-serif;
   --color-case-glow: var(--case-glow);
   --color-enter-lettering: var(--enter-lettering);
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-link: var(--link-color);
+  --color-theme-bg: var(--theme-bg);
+  --color-theme-text: var(--theme-text);
+  --font-stratumno2: 'stratumno2', sans-serif;
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 
@@ -57,6 +65,17 @@ html.dark {
 
 html.dark .font-nav {
   font-family: 'dotrice', sans-serif;
+}
+
+/* Theme toggle: opposite of nav — dotrice in light site mode, Daubenton in dark */
+html.light .font-theme-toggle {
+  font-family: 'dotrice', sans-serif;
+  font-weight: 700;
+}
+
+html.dark .font-theme-toggle {
+  font-family: 'Daubenton', sans-serif;
+  font-weight: 400;
 }
 
 body {
