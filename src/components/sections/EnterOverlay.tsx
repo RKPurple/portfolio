@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { motion, useAnimation } from 'framer-motion';
 import { usePhase } from '@/context/EnterContext';
+import { useTheme } from '@/context/ThemeContext';
 
 interface EnterOverlayProps {
     onEnter: () => void;
@@ -22,7 +23,10 @@ function EnterOverlay({ onEnter }: EnterOverlayProps) {
     const [displayedText, setDisplayedText] = useState('');
     const [hintIndex, setHintIndex] = useState(0);
     const { phase } = usePhase()
+    const { theme } = useTheme()
     const isBackground = phase === 'spinning'
+    const keySrc = theme === 'light' ? '/cases/dreams_nightmares_key.png' : '/cases/shattered_web_key.png'
+    const caseSrc = theme === 'light' ? '/cases/dreams_nightmares_case.png' : '/cases/shattered_web_case.png'
     const shakeControls = useAnimation();
 
     useEffect(() => {
@@ -91,16 +95,14 @@ function EnterOverlay({ onEnter }: EnterOverlayProps) {
             {!isBackground && (
                 <>
                     {/* Key cursor */}
-                    <picture className='hidden md:block'>
-                        <source srcSet="/cases/dreams_nightmares_key.png" media="(prefers-color-scheme: light)" />
-                        <img
-                            src='/cases/shattered_web_key.png'
-                            alt=''
-                            aria-hidden
-                            className='fixed pointer-events-none z-50 h-[4vw] w-auto'
-                            style={{ left: mousePos.x, top: mousePos.y, transform: 'translate(-20%, -80%)' }}
-                            />
-                    </picture>
+                    <img
+                        src={keySrc}
+                        alt=""
+                        aria-hidden
+                        suppressHydrationWarning
+                        className="hidden md:block fixed pointer-events-none z-50 h-[4vw] w-auto"
+                        style={{ left: mousePos.x, top: mousePos.y, transform: 'translate(-20%, -80%)' }}
+                    />
                     {/* Hint text */}
                     <p className="font-stratumno2 text-md md:text-lg text-enter-lettering tracking-widest uppercase">
                         {showHint ? displayedText : '\u00A0'}
@@ -123,10 +125,12 @@ function EnterOverlay({ onEnter }: EnterOverlayProps) {
                     className={`relative transition-opacity hover:opacity-85 ${isHoveringCase ? 'cursor-none' : 'cursor-default'} ${isBackground ? 'opacity-15 pointer-events-none' : 'hover:opacity-86'}`}
                 >
                     <motion.div animate={shakeControls}>
-                        <picture>
-                            <source srcSet="/cases/dreams_nightmares_case.png" media="(prefers-color-scheme: light)" />
-                            <img src='/cases/shattered_web_case.png' alt='Shattered Web Case' className='h-[60vw] sm: h-[45vw] md:h-[35vw] w-auto' />
-                        </picture>
+                        <img
+                            src={caseSrc}
+                            alt="Shattered Web Case"
+                            suppressHydrationWarning
+                            className="h-[60vw] sm: h-[45vw] md:h-[35vw] w-auto"
+                        />
                     </motion.div>
                 </button>
             </div>

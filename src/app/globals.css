@@ -1,24 +1,20 @@
 @import "tailwindcss";
 
-/* ─── Global Tokens ──────────────────────────────────────── */
-@media (prefers-color-scheme: light) {
-  :root {
-    --background: #E8E8E8;
-    --foreground: #000000;
-    --case-glow: #7B5C8A;
-    --enter-lettering: #161618;
-    --link-color: #3C3A38;
-  }
+/* ─── Global Tokens (html.light / html.dark — set by layout script + ThemeProvider) ─ */
+html.light {
+  --background: #E8E8E8;
+  --foreground: #000000;
+  --case-glow: #7B5C8A;
+  --enter-lettering: #161618;
+  --link-color: #3C3A38;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #09090f;
-    --foreground: #ededed;
-    --case-glow: #4a1f8c;
-    --enter-lettering: #e8e0f5;
-    --link-color: #C8C8D0;
-  }
+html.dark {
+  --background: #09090f;
+  --foreground: #ededed;
+  --case-glow: #4a1f8c;
+  --enter-lettering: #e8e0f5;
+  --link-color: #C8C8D0;
 }
 
 :root {
@@ -56,13 +52,11 @@
 
 
 @utility font-nav {
-  @media (prefers-color-scheme: dark) {
-    font-family: 'dotrice', sans-serif;
-  }
+  font-family: 'Daubenton', sans-serif;
+}
 
-  @media (prefers-color-scheme: light) {
-    font-family: 'Daubenton', sans-serif;
-  }
+html.dark .font-nav {
+  font-family: 'dotrice', sans-serif;
 }
 
 body {
