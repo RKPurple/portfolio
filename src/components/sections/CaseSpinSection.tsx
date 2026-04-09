@@ -5,6 +5,7 @@ import { motion, useAnimate, usePresence } from 'framer-motion'
 import { usePhase } from '@/context/EnterContext'
 import { reelSpinEasing } from '@/lib/animations'
 import { type Card, type RarityId, FILLER_SKINS, SPECIAL_CARDS, RARITY_COLORS, type SpecialCardType } from '@/lib/skinData'
+import HalftoneMaskIcon from '@/components/icons/HalftoneMaskIcon'
 import { SOCIAL_LINKS, NAV_LINKS } from '@/lib/data'
 
 const CARD_GAP = 8
@@ -39,10 +40,11 @@ function SpecialCardContent({ type, iconSize, image }: { type: SpecialCardType, 
     if (type === 'socialdock') {
         return (
             <div className="flex flex-row items-center gap-3">
-                {SOCIAL_LINKS.map(link => {
-                    const Icon = link.icon
-                    return <Icon key={link.id} size={iconSize} color="rgba(242,240,239,1)" />
-                })}
+                {SOCIAL_LINKS.map(link => (
+                    <span key={link.id} className="inline-block" style={{ color: 'rgba(242,240,239,1)' }}>
+                        <HalftoneMaskIcon src={link.maskSrc} size={iconSize} />
+                    </span>
+                ))}
             </div>
         )
     }

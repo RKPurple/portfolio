@@ -1,6 +1,7 @@
 'use client'
 
 import { motion } from 'framer-motion'
+import HalftoneMaskIcon from '@/components/icons/HalftoneMaskIcon'
 import { SOCIAL_LINKS } from '@/lib/data'
 
 function resolveColor(color: string): string {
@@ -18,26 +19,23 @@ export default function SocialDock({ rarityColor }: Props) {
     return (
         <div className="flex flex-col gap-3 text-link-color">
             <div className="flex flex-row items-center gap-3">
-                {SOCIAL_LINKS.map(link => {
-                    const Icon = link.icon
-                    return (
-                        <motion.a
-                            key={link.id}
-                            href={link.href}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            aria-label={link.label}
-                            style={{ color: 'var(--link-color)'}}
-                            whileHover={{ scale: 1.5, color: resolveColor(link.hoverColor) }}
-                            transition={{
-                                scale: { type: 'spring', stiffness: 400, damping: 20 },
-                                color: { type: 'tween', duration: 0.15, ease: 'easeInOut' }
-                            }}
-                        >
-                            <Icon size={35} />
-                        </motion.a>
-                    )
-                })}
+                {SOCIAL_LINKS.map(link => (
+                    <motion.a
+                        key={link.id}
+                        href={link.href}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        aria-label={link.label}
+                        style={{ color: 'var(--link-color)'}}
+                        whileHover={{ scale: 1.5, color: resolveColor(link.hoverColor) }}
+                        transition={{
+                            scale: { type: 'spring', stiffness: 400, damping: 20 },
+                            color: { type: 'tween', duration: 0.15, ease: 'easeInOut' }
+                        }}
+                    >
+                        <HalftoneMaskIcon src={link.maskSrc} size={45} />
+                    </motion.a>
+                ))}
             </div>
             {rarityColor && (
                 <motion.div

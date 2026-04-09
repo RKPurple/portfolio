@@ -1,12 +1,11 @@
-import { FaGithub, FaLinkedin } from 'react-icons/fa'
-import { HiOutlineDocumentText, HiOutlineMail } from 'react-icons/hi'
 import type { IconType } from 'react-icons'
 
 export type SocialLink = {
     id: string
     label: string
     href: string
-    icon: IconType
+    /** Public URL under `/public`, e.g. `/icons/github_halftone.svg` */
+    maskSrc: string
     hoverColor: string
 }
 
@@ -22,30 +21,29 @@ export const SOCIAL_LINKS: SocialLink[] = [
         id: 'github',
         label: 'GitHub',
         href: 'https://github.com/RKPurple',
-        icon: FaGithub,
+        maskSrc: '/icons/github_halftone.svg',
         hoverColor: 'var(--social-dock-github)',
     },
     {
         id: 'linkedin',
         label: 'LinkedIn',
         href: 'https://linkedin.com/in/rohankallur',
-        icon: FaLinkedin,
+        maskSrc: '/icons/linkedin_halftone.svg',
         hoverColor: 'var(--social-dock-linkedin)',
     },
     {
         id: 'resume',
         label: 'Resume',
         href: '/assets/resume.pdf',
-        icon: HiOutlineDocumentText,
+        maskSrc: '/icons/resume_halftone.svg',
         hoverColor: 'var(--social-dock-resume)',
     },
     // {
     //     id: 'email',
     //     label: 'Email',
     //     href: 'mailto:placeholder@email.com',
-    //     icon: HiOutlineMail,
+    //     maskSrc: '/icons/email_halftone.svg',
     //     hoverColor: 'var(--social-dock-email)',
-    //     enabled: false, // flip to true when contact section is decided
     // },
 ]
 
