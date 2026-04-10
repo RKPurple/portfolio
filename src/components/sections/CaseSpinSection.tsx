@@ -101,9 +101,17 @@ function SpecialCardContent({ type, iconSize, image }: { type: SpecialCardType, 
 function SpinCaseBackdrop() {
     const isLight = useIsLightModeFromHtml()
     const src = caseImageSrc(isLight)
+    const [isPresent] = usePresence()
     return (
-        <div
+        <motion.div
             className="absolute inset-0 z-0 flex items-center justify-center pointer-events-none"
+            initial={false}
+            animate={isPresent ? { opacity: 1, y: 0, scale: 1 } : { opacity: 0, y: 64, scale: 0.98 }}
+            transition={{ 
+                duration: 0.35, 
+                ease: [0.22, 1, 0.36, 1],
+                type: 'spring', stiffness: 120, damping: 22, mass: 1,
+            }}
             aria-hidden
         >
             {/* Same footprint as EnterOverlay CaseGlow: fills the case image box (idle pulse peaks ~1.03× this) */}
@@ -118,7 +126,7 @@ function SpinCaseBackdrop() {
                     className={`relative ${CASE_IMAGE_CLASS} opacity-15`}
                 />
             </div>
-        </div>
+        </motion.div>
     )
 }
 
