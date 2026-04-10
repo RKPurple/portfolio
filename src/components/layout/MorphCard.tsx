@@ -9,13 +9,15 @@ type Props = {
     type: SpecialCardType
     children: React.ReactNode
     className?: string
+    /** Base delay (seconds) before this card's FLIP animation starts. Use to stagger cards. */
+    delay?: number
 }
 
 const SPRING = { type: 'spring', stiffness: 120, damping: 22, mass: 1 } as const
 const FADE_DURATION = 0.35
 const FADE_DELAY = 0.50
 
-export default function MorphCard({ type, children, className }: Props) {
+export default function MorphCard({ type, children, className, delay = 0 }: Props) {
     const { cardSlotRects } = usePhase()
     const reelRect = cardSlotRects?.[type]
     const ref = useRef<HTMLDivElement>(null)
@@ -48,18 +50,19 @@ export default function MorphCard({ type, children, className }: Props) {
 
         setVisible(true)
 
-        // FLIP: Play — spring back to natural layout position
+        // FLIP: Play — spring back to natural layout position.
+        // All delays are offset by the per-card `delay` prop for staggering.
         let cancelled = false
         const controls = [
-            animate(x, 0, { ...SPRING, delay: 0.15 }),
-            animate(y, 0, { ...SPRING, delay: 0.15 }),
-            animate(scaleX, 1, SPRING),
-            animate(scaleY, 1, SPRING),
+            animate(x, 0, { ...SPRING, delay: delay + 0.15 }),
+            animate(y, 0, { ...SPRING, delay: delay + 0.15 }),
+            animate(scaleX, 1, { ...SPRING, delay }),
+            animate(scaleY, 1, { ...SPRING, delay }),
             animate(bgColor, 'rgba(0,0,0,0)', {
                 type: 'tween',
                 duration: FADE_DURATION,
                 ease: 'easeOut',
-                delay: FADE_DELAY,
+                delay: delay + FADE_DELAY,
             }),
         ]
 

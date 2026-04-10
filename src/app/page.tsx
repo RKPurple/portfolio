@@ -1,7 +1,7 @@
 'use client'
 
 import { AnimatePresence, motion } from 'framer-motion'
-import { enterOverlayVariants, heroVariants } from '@/lib/animations'
+import { heroVariants } from '@/lib/animations'
 import { usePhase } from '@/context/EnterContext'
 import EnterOverlay from '@/components/sections/EnterOverlay'
 import CaseSpinSection from '@/components/sections/CaseSpinSection'

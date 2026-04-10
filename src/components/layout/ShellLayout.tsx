@@ -29,10 +29,10 @@ export default function ShellLayout({ children }: Props) {
             <header className="shrink-0 flex items-center justify-between px-8 pt-8">
                 {completed && (
                     <>
-                        <MorphCard type="socialdock">
+                        <MorphCard type="socialdock" delay={0}>
                             <SocialDock rarityColor={specialCardsRarities?.socialdock} />
                         </MorphCard>
-                        <MorphCard type="nav">
+                        <MorphCard type="nav" delay={0.25}>
                             <NavDock rarityColor={specialCardsRarities?.nav} />
                         </MorphCard>
                     </>
@@ -44,7 +44,7 @@ export default function ShellLayout({ children }: Props) {
             {/* Framer's layout prop on MorphCard springs between sides on nav. */}
             <main className={`flex-1 flex ${reversed ? 'flex-row-reverse' : 'flex-row'} items-start px-8 pt-8 min-h-0`}>
                 {completed && (
-                    <MorphCard type="pictureframe" className="shrink-0 self-start">
+                    <MorphCard type="pictureframe" delay={0.5} className="shrink-0 self-start">
                         <PictureFrame rarityColor={specialCardsRarities?.pictureframe} />
                     </MorphCard>
                 )}
@@ -60,7 +60,7 @@ export default function ShellLayout({ children }: Props) {
             {/* ── Footer: ThemeToggle right ─────────────────────────────────── */}
             <footer className="shrink-0 flex justify-end px-8 pb-8">
                 {completed && (
-                    <MorphCard type="themebutton">
+                    <MorphCard type="themebutton" delay={0.75}>
                         <ThemeToggle rarityColor={specialCardsRarities?.themebutton} />
                     </MorphCard>
                 )}

@@ -89,7 +89,7 @@ function EnterOverlay({ onEnter }: EnterOverlayProps) {
     return (
         <motion.div
             className="flex flex-col items-center justify-center h-screen gap-8 md:cursor-none"
-            exit={{ opacity: 0, y: 80 }}
+            exit={{ opacity: 0 }}
             transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1]}}
         >
             {!isBackground && (
