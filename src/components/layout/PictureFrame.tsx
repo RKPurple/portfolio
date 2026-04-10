@@ -4,12 +4,15 @@ import { motion } from 'framer-motion'
 
 type Props = {
     rarityColor?: string
+    children?: React.ReactNode
 }
 
-export default function PictureFrame({ rarityColor }: Props) {
+export default function PictureFrame({ rarityColor, children }: Props) {
     return (
         <div className="relative w-md h-md">
-            <img src="/assets/portrait.jpg" alt="Rohan" className="w-full h-full object-cover" />
+            {children ?? (
+                <img src="/assets/portrait.jpg" alt="Rohan" className="w-full h-full object-cover" />
+            )}
             <motion.div
                 className="absolute inset-0 pointer-events-none"
                 style={{

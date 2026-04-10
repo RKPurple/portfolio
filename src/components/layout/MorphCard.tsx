@@ -1,65 +1,97 @@
 'use client'
 
-import { motion } from 'framer-motion'
+import { motion, useMotionValue, animate } from 'framer-motion'
 import { usePhase } from '@/context/EnterContext'
 import type { SpecialCardType } from '@/lib/skinData'
 import { useRef, useState, useLayoutEffect } from 'react'
 
 type Props = {
     type: SpecialCardType
-    heroTop: number
-    heroLeft: number
     children: React.ReactNode
+    className?: string
 }
 
 const SPRING = { type: 'spring', stiffness: 120, damping: 22, mass: 1 } as const
 const FADE_DURATION = 0.35
 const FADE_DELAY = 0.50
 
-export default function MorphCard({ type, heroTop, heroLeft, children }: Props) {
+export default function MorphCard({ type, children, className }: Props) {
     const { cardSlotRects } = usePhase()
-    const rect = cardSlotRects?.[type]
-    const contentRef = useRef<HTMLDivElement>(null)
-    const [heroSize, setHeroSize] = useState<{ width: number, height: number } | null>(null)
+    const reelRect = cardSlotRects?.[type]
+    const ref = useRef<HTMLDivElement>(null)
     const [done, setDone] = useState(false)
+    // Hide until measured — prevents a single-frame flash at the layout position
+    const [visible, setVisible] = useState(!reelRect)
+
+    const x = useMotionValue(0)
+    const y = useMotionValue(0)
+    const scaleX = useMotionValue(1)
+    const scaleY = useMotionValue(1)
+    const bgColor = useMotionValue('rgba(0,0,0,0)')
 
     useLayoutEffect(() => {
-        if (contentRef.current) {
-            const { width, height } = contentRef.current.getBoundingClientRect()
-            setHeroSize({ width, height })
+        if (!ref.current || !reelRect) {
+            // No reel data (e.g. hot reload) — just show in place immediately
+            setVisible(true)
+            setDone(true)
+            return
         }
+
+        const selfRect = ref.current.getBoundingClientRect()
+
+        // FLIP: Invert — push element visually to the reel slot position
+        x.set(reelRect.left - selfRect.left)
+        y.set(reelRect.top - selfRect.top)
+        scaleX.set(reelRect.width / selfRect.width)
+        scaleY.set(reelRect.height / selfRect.height)
+        bgColor.set('#3a3a3a')
+
+        setVisible(true)
+
+        // FLIP: Play — spring back to natural layout position
+        let cancelled = false
+        const controls = [
+            animate(x, 0, { ...SPRING, delay: 0.15 }),
+            animate(y, 0, { ...SPRING, delay: 0.15 }),
+            animate(scaleX, 1, SPRING),
+            animate(scaleY, 1, SPRING),
+            animate(bgColor, 'rgba(0,0,0,0)', {
+                type: 'tween',
+                duration: FADE_DURATION,
+                ease: 'easeOut',
+                delay: FADE_DELAY,
+            }),
+        ]
+
+        // Mark done when the last animation (background fade) completes
+        controls[controls.length - 1].then(() => {
+            if (!cancelled) setDone(true)
+        })
+
+        return () => {
+            cancelled = true
+            controls.forEach(c => c.stop())
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     return (
         <motion.div
-            className={`absolute pointer-events-auto flex items-center justify-center ${!done ? 'overflow-hidden' : ''}`}
-            style={{ top: heroTop, left: heroLeft }}
-            initial={rect ? {
-                x: rect.left - heroLeft,
-                y: rect.top - heroTop,
-                width: rect.width,
-                height: rect.height,
-                backgroundColor: '#3a3a3a',
-            } : false}
-            animate={{
-                x: 0,
-                y: 0,
-                width: heroSize?.width,
-                height: heroSize?.height,
-                backgroundColor: 'rgba(0,0,0,0)',
+            ref={ref}
+            // Only enable layout animations after the entry morph is done,
+            // so route-change repositions spring smoothly without interfering
+            // with the initial FLIP
+            layout={done}
+            transition={{ layout: SPRING }}
+            className={`pointer-events-auto ${!done ? 'overflow-hidden' : ''} ${className ?? ''}`}
+            style={{
+                x, y, scaleX, scaleY,
+                backgroundColor: bgColor,
+                transformOrigin: 'top left',
+                visibility: visible ? 'visible' : 'hidden',
             }}
-            transition={{
-                x: { ...SPRING, delay: 0.15 },
-                y: { ...SPRING, delay: 0.15 },
-                width: SPRING,
-                height: SPRING,
-                backgroundColor: { type: 'tween', duration: FADE_DURATION, ease: 'easeOut', delay: FADE_DELAY },
-            }}
-            onAnimationComplete={() => setDone(true)}
         >
-            <div ref={contentRef}>
-                {children}
-            </div>
+            {children}
         </motion.div>
     )
 }
