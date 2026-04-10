@@ -42,6 +42,8 @@ function CaseGlow() {
 }
 
 function EnterOverlay({ onEnter }: EnterOverlayProps) {
+    /** False while AnimatePresence runs exit — layer must not block hits or hide cursor */
+    const [isPresent] = usePresence()
     const [mousePos, setMousePos] = useState({ x: -100, y: -100 });
     const [isHoveringCase, setIsHoveringCase] = useState(false);
     const [showHint, setShowHint] = useState(false);
@@ -111,7 +113,9 @@ function EnterOverlay({ onEnter }: EnterOverlayProps) {
 
     return (
         <motion.div
-            className="fixed inset-0 z-[45] flex flex-col items-center justify-center gap-8 md:cursor-none"
+            className={`fixed inset-0 z-[45] flex flex-col items-center justify-center gap-8 ${
+                isPresent ? 'md:cursor-none' : 'pointer-events-none md:cursor-auto'
+            }`}
             exit={{ opacity: 0, y: 80 }}
             transition={{
                 type: 'spring', stiffness: 120, damping: 22, mass: 1,

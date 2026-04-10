@@ -62,11 +62,11 @@ function SpecialCardContent({ type, iconSize, image }: { type: SpecialCardType, 
     }
     if (type === 'nav') {
         return (
-            <div className="flex flex-col items-start gap-1">
+            <div className="flex flex-row items-center gap-1">
                 {NAV_LINKS.map(link => (
                     <span
                         key={link.id}
-                        className='text-md font-nav text-link-color'
+                        className='text-sm font-nav text-link-color'
                     >
                         {link.label}
                     </span>
@@ -166,7 +166,7 @@ export default function CaseSpinSection() {
                 setCardSlotRects(rects)
                 setSpecialCardsRarities(rarityMap)
                 setWinningCardType(cards[WINNING_CARD].type!)
-                setTimeout(() => setPhase('completed'), 800)
+                setTimeout(() => setPhase('completed'), 400)
             })
     }, [])
 
@@ -175,7 +175,7 @@ export default function CaseSpinSection() {
     return (
         <motion.div
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.7, delay: 1.4 }}
+            transition={{ duration: 0.7, delay: 0.1 }}
             className="fixed inset-0 z-40 flex items-center justify-center pointer-events-none"
         >
             <SpinCaseBackdrop />
