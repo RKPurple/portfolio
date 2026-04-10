@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { EnterProvider } from '@/context/EnterContext'
 import { ThemeProvider } from '@/context/ThemeContext'
 import "./globals.css";
-import AppShell from '@/components/layout/AppShell'
+import ShellLayout from '@/components/layout/ShellLayout'
 
 const themeInitScript = `
 (function() {
@@ -36,8 +36,9 @@ export default function RootLayout({
       <body>
         <ThemeProvider>
           <EnterProvider>
-            {children}
-            <AppShell />
+            <ShellLayout>
+              {children}
+            </ShellLayout>
           </EnterProvider>
         </ThemeProvider>
       </body>

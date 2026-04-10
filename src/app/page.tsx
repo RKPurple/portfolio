@@ -24,10 +24,10 @@ export default function Page() {
         {phase === 'spinning' && <CaseSpinSection key="spin" />}
       </AnimatePresence>
 
-      {/* Hero Section */}
+      {/* Hero Section — flex-1 so it fills the section slot in ShellLayout */}
       <AnimatePresence>
         {phase === 'completed' && (
-          <motion.div key="hero" variants={heroVariants} initial="initial" animate="animate">
+          <motion.div key="hero" variants={heroVariants} initial="initial" animate="animate" className="flex-1 flex flex-col">
             <HeroSection />
           </motion.div>
         )}
