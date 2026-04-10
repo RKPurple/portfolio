@@ -8,6 +8,7 @@ import { type Card, type RarityId, FILLER_SKINS, SPECIAL_CARDS, RARITY_COLORS, t
 import { useIsLightModeFromHtml, useTheme } from '@/context/ThemeContext'
 import HalftoneMaskIcon from '@/components/icons/HalftoneMaskIcon'
 import { SOCIAL_LINKS, NAV_LINKS } from '@/lib/data'
+import { caseImageSrc, CASE_IMAGE_CLASS } from '@/lib/caseAssets'
 
 const CARD_GAP = 8
 const CARD_COUNT = 60
@@ -96,6 +97,31 @@ function SpecialCardContent({ type, iconSize, image }: { type: SpecialCardType, 
     return null
 }
 
+/** Dimmed weapon case + static glow behind the reel (spin scene only — not EnterOverlay). */
+function SpinCaseBackdrop() {
+    const isLight = useIsLightModeFromHtml()
+    const src = caseImageSrc(isLight)
+    return (
+        <div
+            className="absolute inset-0 z-0 flex items-center justify-center pointer-events-none"
+            aria-hidden
+        >
+            {/* Same footprint as EnterOverlay CaseGlow: fills the case image box (idle pulse peaks ~1.03× this) */}
+            <div className="relative flex items-center justify-center">
+                <div
+                    className="absolute w-full h-full rounded-full bg-case-glow blur-3xl opacity-[0.55]"
+                />
+                <img
+                    src={src}
+                    alt=""
+                    suppressHydrationWarning
+                    className={`relative ${CASE_IMAGE_CLASS} opacity-15`}
+                />
+            </div>
+        </div>
+    )
+}
+
 export default function CaseSpinSection() {
     const { setPhase, setWinningCardType, setSpecialCardsRarities, setCardSlotRects } = usePhase()
     const [isPresent] = usePresence()
@@ -142,8 +168,9 @@ export default function CaseSpinSection() {
         <motion.div
             exit={{ opacity: 0 }}
             transition={{ duration: 0.7, delay: 1.4 }}
-            className="fixed inset-0 flex items-center justify-center z-40 pointer-events-none"
+            className="fixed inset-0 z-40 flex items-center justify-center pointer-events-none"
         >
+            <SpinCaseBackdrop />
             {/* Flash */}
             <motion.div
                 className="absolute inset-0 bg-white/50 pointer-events-none z-10"
@@ -152,7 +179,7 @@ export default function CaseSpinSection() {
                 transition={{ duration: 0.25, ease: 'easeOut', delay: 0.05 }}
             />
             {/* Reel area */}
-            <div className="relative w-full md:w-[65%] flex items-center">
+            <div className="relative z-20 w-full md:w-[65%] flex items-center">
                 {/* Center line */}
                 <div className="absolute left-1/2 top-0 h-20 md:h-40 w-0.5 z-50 pointer-events-none" style={{ backgroundColor: 'var(--cs-gold)' }} />
                 {/* Viewport */}

@@ -1,9 +1,9 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { motion, useAnimation } from 'framer-motion';
-import { usePhase } from '@/context/EnterContext';
+import { motion, useAnimation, usePresence } from 'framer-motion';
 import { useIsLightModeFromHtml } from '@/context/ThemeContext';
+import { caseImageSrc, caseKeySrc, CASE_IMAGE_CLASS } from '@/lib/caseAssets';
 
 interface EnterOverlayProps {
     onEnter: () => void;
@@ -16,17 +16,40 @@ const HINTS = [
     "you don't get shit for waiting",
 ];
 
+/** Idle-only pulse; usePresence fades the glow out when the overlay exits on click → spin. */
+function CaseGlow() {
+    const [isPresent] = usePresence()
+
+    const idlePulse = {
+        opacity: [0.45, 0.68, 0.45],
+        scale: [0.96, 1.03, 0.96],
+    }
+    const exitOff = { opacity: 0, scale: 1 }
+
+    return (
+        <motion.div
+            aria-hidden
+            className="absolute w-full h-full rounded-full bg-case-glow blur-3xl"
+            initial={false}
+            animate={!isPresent ? exitOff : idlePulse}
+            transition={
+                !isPresent
+                    ? { duration: 0.35, ease: [0.22, 1, 0.36, 1] }
+                    : { duration: 7, repeat: Infinity, ease: 'easeInOut' }
+            }
+        />
+    )
+}
+
 function EnterOverlay({ onEnter }: EnterOverlayProps) {
     const [mousePos, setMousePos] = useState({ x: -100, y: -100 });
     const [isHoveringCase, setIsHoveringCase] = useState(false);
     const [showHint, setShowHint] = useState(false);
     const [displayedText, setDisplayedText] = useState('');
     const [hintIndex, setHintIndex] = useState(0);
-    const { phase } = usePhase()
     const isLight = useIsLightModeFromHtml()
-    const isBackground = phase === 'spinning'
-    const keySrc = isLight ? '/cases/dreams_nightmares_key.png' : '/cases/shattered_web_key.png'
-    const caseSrc = isLight ? '/cases/dreams_nightmares_case.png' : '/cases/shattered_web_case.png'
+    const keySrc = caseKeySrc(isLight)
+    const caseSrc = caseImageSrc(isLight)
     const shakeControls = useAnimation();
 
     useEffect(() => {
@@ -88,42 +111,41 @@ function EnterOverlay({ onEnter }: EnterOverlayProps) {
 
     return (
         <motion.div
-            className="flex flex-col items-center justify-center h-screen gap-8 md:cursor-none"
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1]}}
+            className="fixed inset-0 z-[45] flex flex-col items-center justify-center gap-8 md:cursor-none"
+            exit={{ opacity: 0, y: 80 }}
+            transition={{
+                type: 'spring', stiffness: 120, damping: 22, mass: 1,
+                duration: 0.7,
+                ease: [0.33, 1, 0.68, 1],
+                opacity: { duration: 0.55, ease: [0.22, 1, 0.36, 1] },
+                y: { duration: 0.75, ease: [0.4, 0, 0.2, 1] },
+            }}
         >
-            {!isBackground && (
-                <>
-                    {/* Key cursor */}
-                    <img
-                        key={keySrc}
-                        src={keySrc}
-                        alt=""
-                        aria-hidden
-                        suppressHydrationWarning
-                        className="hidden md:block fixed pointer-events-none z-50 h-[4vw] w-auto"
-                        style={{ left: mousePos.x, top: mousePos.y, transform: 'translate(-20%, -80%)' }}
-                    />
-                    {/* Hint text */}
-                    <p className="font-stratumno2 text-md md:text-lg text-enter-lettering tracking-widest uppercase">
-                        {showHint ? displayedText : '\u00A0'}
-                        {showHint && displayedText.length < HINTS[hintIndex % HINTS.length].length && <span className="animate-pulse">_</span>}
-                    </p>
-                </>
-            )}
-            <div className="relative flex items-center justify-center">
-                {/* Purple glow behind case */}
-                <motion.div
-                    className="absolute w-full h-full rounded-full bg-case-glow blur-3xl"
-                    animate={{ opacity: [0.4, 0.8, 0.4], scale: [0.9, 1.05, 0.9] }}
-                    transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
+            <>
+                {/* Key cursor */}
+                <img
+                    key={keySrc}
+                    src={keySrc}
+                    alt=""
+                    aria-hidden
+                    suppressHydrationWarning
+                    className="hidden md:block fixed pointer-events-none z-50 h-[4vw] w-auto"
+                    style={{ left: mousePos.x, top: mousePos.y, transform: 'translate(-20%, -80%)' }}
                 />
+                {/* Hint text */}
+                <p className="font-stratumno2 text-md md:text-lg text-enter-lettering tracking-widest uppercase">
+                    {showHint ? displayedText : '\u00A0'}
+                    {showHint && displayedText.length < HINTS[hintIndex % HINTS.length].length && <span className="animate-pulse">_</span>}
+                </p>
+            </>
+            <div className="relative flex items-center justify-center">
+                <CaseGlow />
                 <button
+                    type="button"
                     onClick={onEnter}
-                    disabled={isBackground}
                     onMouseEnter={() => setIsHoveringCase(true)}
                     onMouseLeave={() => setIsHoveringCase(false)}
-                    className={`relative transition-opacity hover:opacity-85 ${isHoveringCase ? 'cursor-none' : 'cursor-default'} ${isBackground ? 'opacity-15 pointer-events-none' : 'hover:opacity-86'}`}
+                    className={`relative transition-opacity hover:opacity-85 ${isHoveringCase ? 'cursor-none' : 'cursor-default'}`}
                 >
                     <motion.div animate={shakeControls}>
                         <img
@@ -131,7 +153,7 @@ function EnterOverlay({ onEnter }: EnterOverlayProps) {
                             src={caseSrc}
                             alt="Weapon case"
                             suppressHydrationWarning
-                            className="h-[60vw] sm: h-[45vw] md:h-[35vw] w-auto"
+                            className={CASE_IMAGE_CLASS}
                         />
                     </motion.div>
                 </button>

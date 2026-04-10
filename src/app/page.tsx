@@ -14,7 +14,7 @@ export default function Page() {
     <>
       {/* Enter Overlay */}
       <AnimatePresence>
-        {(phase === 'idle' || phase === 'spinning') && (
+        {phase === 'idle' && (
           <EnterOverlay key="enter" onEnter={() => setPhase('spinning')} />
         )}
       </AnimatePresence>
