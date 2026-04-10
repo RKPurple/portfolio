@@ -2,6 +2,7 @@
 
 import { motion } from 'framer-motion'
 import HalftoneMaskIcon from '@/components/icons/HalftoneMaskIcon'
+import { useIsLightModeFromHtml } from '@/context/ThemeContext'
 import { SOCIAL_LINKS } from '@/lib/data'
 
 function resolveColor(color: string): string {
@@ -16,10 +17,14 @@ type Props = {
 }
 
 export default function SocialDock({ rarityColor }: Props) {
+    const isLight = useIsLightModeFromHtml()
+
     return (
         <div className="flex flex-col gap-3 text-link-color">
             <div className="flex flex-row items-center gap-3">
-                {SOCIAL_LINKS.map(link => (
+                {SOCIAL_LINKS.map(link => {
+                    const maskSrc = isLight ? link.maskSrcLight : link.maskSrcDark
+                    return (
                     <motion.a
                         key={link.id}
                         href={link.href}
@@ -33,9 +38,10 @@ export default function SocialDock({ rarityColor }: Props) {
                             color: { type: 'tween', duration: 0.15, ease: 'easeInOut' }
                         }}
                     >
-                        <HalftoneMaskIcon src={link.maskSrc} size={45} />
+                        <HalftoneMaskIcon key={maskSrc} src={maskSrc} size={45} />
                     </motion.a>
-                ))}
+                    )
+                })}
             </div>
             {rarityColor && (
                 <motion.div

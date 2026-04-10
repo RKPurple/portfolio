@@ -8,7 +8,7 @@ type Props = {
 export default function HalftoneMaskIcon({ src, size = 35, className }: Props) {
     return (
         <span
-            className={`inline-block shrink-0 ${className ?? ''}`}
+            className={`halftone-mask-icon inline-block shrink-0 ${className ?? ''}`}
             style={{
                 width: size,
                 height: size,

@@ -4,8 +4,10 @@ export type SocialLink = {
     id: string
     label: string
     href: string
-    /** Public URL under `/public`, e.g. `/icons/github_halftone.svg` */
-    maskSrc: string
+    /** Public URL under `/public` — dark theme (e.g. `html.dark`) */
+    maskSrcDark: string
+    /** Public URL under `/public` — light theme (e.g. `html.light`) */
+    maskSrcLight: string
     hoverColor: string
 }
 
@@ -21,28 +23,32 @@ export const SOCIAL_LINKS: SocialLink[] = [
         id: 'github',
         label: 'GitHub',
         href: 'https://github.com/RKPurple',
-        maskSrc: '/icons/github_halftone.svg',
+        maskSrcDark: '/icons/github_dark.svg',
+        maskSrcLight: '/icons/github_light.svg',
         hoverColor: 'var(--social-dock-github)',
     },
     {
         id: 'linkedin',
         label: 'LinkedIn',
         href: 'https://linkedin.com/in/rohankallur',
-        maskSrc: '/icons/linkedin_halftone.svg',
+        maskSrcDark: '/icons/linkedin_dark.svg',
+        maskSrcLight: '/icons/linkedin_light.svg',
         hoverColor: 'var(--social-dock-linkedin)',
     },
     {
         id: 'resume',
         label: 'Resume',
         href: '/assets/resume.pdf',
-        maskSrc: '/icons/resume_halftone.svg',
+        maskSrcDark: '/icons/resume_dark.svg',
+        maskSrcLight: '/icons/resume_light.svg',
         hoverColor: 'var(--social-dock-resume)',
     },
     // {
     //     id: 'email',
     //     label: 'Email',
     //     href: 'mailto:placeholder@email.com',
-    //     maskSrc: '/icons/email_halftone.svg',
+    //     maskSrcDark: '/icons/email_dark.svg',
+    //     maskSrcLight: '/icons/email_light.svg',
     //     hoverColor: 'var(--social-dock-email)',
     // },
 ]

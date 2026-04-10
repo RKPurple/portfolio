@@ -4,6 +4,7 @@
 html.light {
   --background: #E8E8E8;
   --foreground: #000000;
+  --item-pane: #D4D0CC;
   --case-glow: #7B5C8A;
   --enter-lettering: #161618;
   --link-color: #3C3A38;
@@ -16,6 +17,7 @@ html.dark {
   --background: #09090f;
   --foreground: #ededed;
   --case-glow: #4a1f8c;
+  --item-pane: #3a3a3a;
   --enter-lettering: #e8e0f5;
   --link-color: #C8C8D0;
 
@@ -42,6 +44,7 @@ html.dark {
 @theme inline {
   --color-case-glow: var(--case-glow);
   --color-enter-lettering: var(--enter-lettering);
+  --color-item-pane: var(--item-pane);
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-link: var(--link-color);
@@ -76,6 +79,12 @@ html.light .font-theme-toggle {
 html.dark .font-theme-toggle {
   font-family: 'Daubenton', sans-serif;
   font-weight: 400;
+}
+
+/* HalftoneMaskIcon: alpha masking so opaque SVG pixels (e.g. black “light theme” glyphs) reveal currentColor; default luminance would hide black */
+.halftone-mask-icon {
+  mask-mode: alpha;
+  -webkit-mask-mode: alpha;
 }
 
 body {

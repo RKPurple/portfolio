@@ -5,7 +5,7 @@ import { motion, useAnimate, usePresence } from 'framer-motion'
 import { usePhase } from '@/context/EnterContext'
 import { reelSpinEasing } from '@/lib/animations'
 import { type Card, type RarityId, FILLER_SKINS, SPECIAL_CARDS, RARITY_COLORS, type SpecialCardType } from '@/lib/skinData'
-import { useTheme } from '@/context/ThemeContext'
+import { useIsLightModeFromHtml, useTheme } from '@/context/ThemeContext'
 import HalftoneMaskIcon from '@/components/icons/HalftoneMaskIcon'
 import { SOCIAL_LINKS, NAV_LINKS } from '@/lib/data'
 
@@ -39,14 +39,18 @@ function generateCards(): (Card & { rarity: RarityId })[] {
 // Static card content per special card type
 function SpecialCardContent({ type, iconSize, image }: { type: SpecialCardType, iconSize: number, image?: string }) {
     const { theme } = useTheme()
+    const isLight = useIsLightModeFromHtml()
     if (type === 'socialdock') {
         return (
             <div className="flex flex-row items-center gap-3">
-                {SOCIAL_LINKS.map(link => (
+                {SOCIAL_LINKS.map(link => {
+                    const maskSrc = isLight ? link.maskSrcLight : link.maskSrcDark
+                    return (
                     <span key={link.id} className="inline-block" style={{ color: 'var(--link-color)' }}>
-                        <HalftoneMaskIcon src={link.maskSrc} size={iconSize} />
+                        <HalftoneMaskIcon key={maskSrc} src={maskSrc} size={iconSize} />
                     </span>
-                ))}
+                    )
+                })}
             </div>
         )
     }
@@ -61,7 +65,7 @@ function SpecialCardContent({ type, iconSize, image }: { type: SpecialCardType, 
                 {NAV_LINKS.map(link => (
                     <span
                         key={link.id}
-                        className='text-md font-nav'
+                        className='text-md font-nav text-link-color'
                     >
                         {link.label}
                     </span>
@@ -163,7 +167,7 @@ export default function CaseSpinSection() {
                                     <div
                                         key={i}
                                         ref={el => { if (el) slotRefs.current.set(card.type!, el) }}
-                                        className="relative flex-shrink-0 bg-[#3a3a3a] flex items-center justify-center overflow-hidden"
+                                        className="relative flex-shrink-0 bg-item-pane flex items-center justify-center overflow-hidden"
                                         style={{ width: cardWidth, height: cardHeight, opacity: isPresent ? 1 : 0 }}
                                     >
                                         <SpecialCardContent
@@ -187,7 +191,7 @@ export default function CaseSpinSection() {
                             return (
                                 <div
                                     key={i}
-                                    className="relative flex-shrink-0 bg-[#3a3a3a] h-20 md:h-40"
+                                    className="relative flex-shrink-0 bg-item-pane h-20 md:h-40"
                                     style={{ width: cardWidth }}
                                 >
                                     <img
