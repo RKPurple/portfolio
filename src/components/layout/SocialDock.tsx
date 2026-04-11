@@ -20,8 +20,8 @@ export default function SocialDock({ rarityColor }: Props) {
     const isLight = useIsLightModeFromHtml()
 
     return (
-        <div className="flex flex-col gap-3 text-link-color">
-            <div className="flex flex-row items-center gap-3">
+        <div className="flex flex-col gap-0.25 md:gap-3 text-link-color">
+            <div className="flex flex-row items-center gap-0.1 md:gap-3">
                 {SOCIAL_LINKS.map(link => {
                     const maskSrc = isLight ? link.maskSrcLight : link.maskSrcDark
                     return (
@@ -31,6 +31,7 @@ export default function SocialDock({ rarityColor }: Props) {
                         target="_blank"
                         rel="noopener noreferrer"
                         aria-label={link.label}
+                        className='origin-center scale-[0.72] md:scale-100'
                         style={{ color: 'var(--link-color)'}}
                         whileHover={{ scale: 1.5, color: resolveColor(link.hoverColor) }}
                         transition={{

@@ -26,7 +26,7 @@ export default function ShellLayout({ children }: Props) {
         <div className="h-screen w-screen flex flex-col overflow-hidden">
 
             {/* ── Header: SocialDock left | NavDock right ─────────────────── */}
-            <header className="shrink-0 flex items-center justify-between px-8 pt-8">
+            <header className="shrink-0 flex items-end md:items-center justify-between px-4 md:px-8 pt-4 md:pt-8">
                 {completed && (
                     <>
                         <MorphCard type="socialdock" delay={0}>

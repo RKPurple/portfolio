@@ -19,7 +19,7 @@ type Props = {
 export default function NavDock({ rarityColor }: Props) {
     const pathname = usePathname()
     return (
-        <nav className="flex flex-row items-center gap-5 font-nav text-xl text-link-color">
+        <nav className="flex flex-row items-center gap-2 md:gap-5 font-nav text-md md:text-xl text-link-color">
             {NAV_LINKS.map(link => {
                 const isActive = pathname === link.href
                 return (

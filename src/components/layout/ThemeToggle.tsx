@@ -27,7 +27,7 @@ export default function ThemeToggle({ rarityColor }: Props) {
     const resolvedRarity = rarityColor ? resolveColor(rarityColor) : null
 
     return (
-        <div className="relative inline-block">
+        <div className="relative hidden md:inline-block">
             <motion.button
                 type="button"
                 onClick={toggleTheme}
