@@ -43,14 +43,6 @@ export const SOCIAL_LINKS: SocialLink[] = [
         maskSrcLight: '/icons/resume_light.svg',
         hoverColor: 'var(--social-dock-resume)',
     },
-    // {
-    //     id: 'email',
-    //     label: 'Email',
-    //     href: 'mailto:placeholder@email.com',
-    //     maskSrcDark: '/icons/email_dark.svg',
-    //     maskSrcLight: '/icons/email_light.svg',
-    //     hoverColor: 'var(--social-dock-email)',
-    // },
 ]
 
 export const NAV_LINKS: NavLink[] = [
@@ -67,6 +59,6 @@ export const NAV_LINKS: NavLink[] = [
     {
         id: 'contact',
         label: 'CONTACT',
-        href: '/contacts',
+        href: '/contact',
     }
 ]
