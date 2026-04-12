@@ -1,7 +1,8 @@
 'use client'
 
-import { createContext, useContext, useState } from 'react'
-import type { SpecialCardType } from '@/lib/skinData'
+import { createContext, useContext, useEffect, useState } from 'react'
+import { usePathname } from 'next/navigation'
+import { STATIC_FALLBACK_SPECIAL_CARD_RARITIES, type SpecialCardType } from '@/lib/skinData'
 
 type Phase = 'idle' | 'spinning' | 'completed'
 
@@ -18,11 +19,27 @@ type EnterContextType = {
 
 const EnterContext = createContext<EnterContextType | null>(null)
 
+function isNonHomePath(pathname: string | null): boolean {
+    return Boolean(pathname && pathname !== '/')
+}
+
 export function EnterProvider({ children }: { children: React.ReactNode }) {
-    const [phase, setPhase] = useState<Phase>('idle')
+    const pathname = usePathname()
+    const startOnShellOnly = isNonHomePath(pathname)
+
+    const [phase, setPhase] = useState<Phase>(() => (startOnShellOnly ? 'completed' : 'idle'))
     const [winningCardType, setWinningCardType] = useState<SpecialCardType | null>(null)
-    const [specialCardsRarities, setSpecialCardsRarities] = useState<Record<SpecialCardType, string> | null>(null)
+    const [specialCardsRarities, setSpecialCardsRarities] = useState<Record<SpecialCardType, string> | null>(() =>
+        startOnShellOnly ? STATIC_FALLBACK_SPECIAL_CARD_RARITIES : null
+    )
     const [cardSlotRects, setCardSlotRects] = useState<Partial<Record<SpecialCardType, DOMRect>> | null>(null)
+
+    // Client navigations (e.g. / → /contact): show shell without requiring the home enter flow.
+    useEffect(() => {
+        if (!isNonHomePath(pathname)) return
+        setPhase('completed')
+        setSpecialCardsRarities(prev => prev ?? STATIC_FALLBACK_SPECIAL_CARD_RARITIES)
+    }, [pathname])
 
     return (
         <EnterContext.Provider value={{

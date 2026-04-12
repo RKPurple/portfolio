@@ -10,7 +10,7 @@ import ThemeToggle from '@/components/layout/ThemeToggle'
 
 // Routes where the PictureFrame aside sits on the RIGHT instead of the left.
 // Add new routes here as pages are built — everything else defaults to left.
-const REVERSED_ROUTES = new Set(['/projects'])
+const REVERSED_ROUTES = new Set(['/projects', '/contact'])
 
 type Props = { children: React.ReactNode }
 
@@ -40,7 +40,7 @@ export default function ShellLayout({ children }: Props) {
             </header>
 
             {/* ── Main: PictureFrame aside + page content ──────────────────── */}
-            {/* flex-row-reverse on /projects moves the aside to the right.     */}
+            {/* flex-row-reverse on listed routes moves the aside to the right. */}
             {/* Framer's layout prop on MorphCard springs between sides on nav. */}
             <main className={`flex-1 flex ${reversed ? 'flex-row-reverse' : 'flex-row'} items-stretch px-8 pt-8 min-h-0`}>
                 {completed && (

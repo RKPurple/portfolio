@@ -10,6 +10,14 @@ export const RARITY_COLORS: Record<RarityId, string> = {
   gold:   'var(--cs-gold)',
 }
 
+/** Deterministic accents when the user lands on a non-home route without completing the case spin (avoids SSR/client random mismatch). */
+export const STATIC_FALLBACK_SPECIAL_CARD_RARITIES: Record<SpecialCardType, string> = {
+  pictureframe: RARITY_COLORS.purple,
+  socialdock: RARITY_COLORS.blue,
+  nav: RARITY_COLORS.pink,
+  themebutton: RARITY_COLORS.gold,
+}
+
 export type Card = {
   rarity?: RarityId
   image?: string
