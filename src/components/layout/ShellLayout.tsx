@@ -1,5 +1,7 @@
 'use client'
 
+import { animate, motion, useMotionValue } from 'framer-motion'
+import { useLayoutEffect, useRef, useState } from 'react'
 import { usePhase } from '@/context/EnterContext'
 import type { PortfolioSection } from '@/context/NavContext'
 import { useNav } from '@/context/NavContext'
@@ -8,9 +10,13 @@ import SocialDock from '@/components/layout/SocialDock'
 import PictureFrame, { PictureFrameVariant } from '@/components/layout/PictureFrame'
 import NavDock from '@/components/layout/NavDock'
 import ThemeToggle from '@/components/layout/ThemeToggle'
+import { cardSlideSpring } from '@/lib/animations'
 
 // Sections where the PictureFrame aside sits on the RIGHT instead of the left.
 const REVERSED_SECTIONS = new Set<PortfolioSection>(['projects', 'contact'])
+
+/** Horizontal gap between the sliding card column and the page content (px). */
+const CARD_CONTENT_GAP = 24
 
 type Props = { children: React.ReactNode }
 
@@ -20,12 +26,91 @@ const PICTURE_FRAME_VARIANTS: Record<PortfolioSection, PictureFrameVariant> = {
     contact: 'contact',
 }
 
+type SlidingAsideProps = {
+    containerRef: React.RefObject<HTMLDivElement | null>
+    reversed: boolean
+    section: PortfolioSection
+    rarityColor?: string
+    onContentInsetChange: (px: number) => void
+}
+
+/**
+ * Absolutely positioned picture column; parent supplies the inset track ref for width.
+ * Mount only after entry (`completed`) so state resets without a reset effect.
+ */
+function SlidingPictureAside({
+    containerRef,
+    reversed,
+    section,
+    rarityColor,
+    onContentInsetChange,
+}: SlidingAsideProps) {
+    const cardTrackRef = useRef<HTMLDivElement>(null)
+    const slideX = useMotionValue(0)
+    const hasSnappedSlideOnce = useRef(false)
+    const [morphDone, setMorphDone] = useState(false)
+
+    useLayoutEffect(() => {
+        if (!morphDone) return
+        const main = containerRef.current
+        const card = cardTrackRef.current
+        if (!main || !card) return
+
+        const applySlide = () => {
+            const innerW = main.clientWidth
+            const cardW = card.getBoundingClientRect().width
+            const maxX = Math.max(0, innerW - cardW)
+            const target = reversed ? maxX : 0
+
+            onContentInsetChange(Math.round(cardW + CARD_CONTENT_GAP))
+
+            if (!hasSnappedSlideOnce.current) {
+                slideX.set(target)
+                hasSnappedSlideOnce.current = true
+            } else {
+                animate(slideX, target, cardSlideSpring)
+            }
+        }
+
+        applySlide()
+        const ro = new ResizeObserver(applySlide)
+        ro.observe(main)
+        ro.observe(card)
+        return () => ro.disconnect()
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- slideX is a stable MotionValue
+    }, [containerRef, morphDone, onContentInsetChange, reversed, section])
+
+    return (
+        <motion.div
+            ref={cardTrackRef}
+            className="absolute top-0 bottom-0 left-0 z-10 flex max-h-full min-h-0"
+            style={{ x: slideX }}
+        >
+            <MorphCard
+                type="pictureframe"
+                delay={0.5}
+                enableLayout={false}
+                className="h-full max-h-full min-h-0 self-stretch"
+                onMorphComplete={() => setMorphDone(true)}
+            >
+                <PictureFrame
+                    variant={PICTURE_FRAME_VARIANTS[section]}
+                    rarityColor={rarityColor}
+                />
+            </MorphCard>
+        </motion.div>
+    )
+}
+
 export default function ShellLayout({ children }: Props) {
     const { phase, specialCardsRarities } = usePhase()
     const { section } = useNav()
 
     const completed = phase === 'completed'
     const reversed = completed && REVERSED_SECTIONS.has(section)
+
+    const mainRef = useRef<HTMLDivElement>(null)
+    const [contentInset, setContentInset] = useState(0)
 
     return (
         <div className="h-screen w-screen flex flex-col overflow-hidden">
@@ -44,22 +129,38 @@ export default function ShellLayout({ children }: Props) {
                 )}
             </header>
 
-            {/* ── Main: PictureFrame aside + page content ──────────────────── */}
-            {/* flex-row-reverse on listed sections moves the aside to the right. */}
-            {/* Framer's layout prop on MorphCard springs between sides on nav. */}
-            <main className={`flex-1 flex ${reversed ? 'flex-row-reverse' : 'flex-row'} items-stretch px-8 pt-8 min-h-0`}>
-                {completed && (
-                    <MorphCard type="pictureframe" delay={0.5} className="shrink-0 self-stretch h-full min-h-0">
-                        <PictureFrame variant={PICTURE_FRAME_VARIANTS[section]} rarityColor={specialCardsRarities?.pictureframe} />
-                    </MorphCard>
-                )}
+            {/* ── Main: inset track; picture slides on transform x ─────────── */}
+            <main className="relative flex min-h-0 flex-1 flex-col pt-8">
+                <div
+                    ref={mainRef}
+                    className="relative mx-8 flex min-h-0 min-w-0 flex-1 flex-col"
+                >
+                    {completed && (
+                        <SlidingPictureAside
+                            containerRef={mainRef}
+                            reversed={reversed}
+                            section={section}
+                            rarityColor={specialCardsRarities?.pictureframe}
+                            onContentInsetChange={setContentInset}
+                        />
+                    )}
 
-                {/* Page content slot — always present so {children} stays
-                    in the same tree position across phase changes, preserving
-                    AnimatePresence exit animations for EnterOverlay/CaseSpinSection */}
-                <section className="flex-1 min-w-0 flex flex-col self-stretch">
-                    {children}
-                </section>
+                    <section
+                        className="flex min-h-0 min-w-0 flex-1 flex-col self-stretch transition-[padding] duration-0"
+                        style={{
+                            paddingLeft:
+                                completed && !reversed && contentInset > 0
+                                    ? contentInset
+                                    : undefined,
+                            paddingRight:
+                                completed && reversed && contentInset > 0
+                                    ? contentInset
+                                    : undefined,
+                        }}
+                    >
+                        {children}
+                    </section>
+                </div>
             </main>
 
             {/* ── Footer: ThemeToggle right ─────────────────────────────────── */}

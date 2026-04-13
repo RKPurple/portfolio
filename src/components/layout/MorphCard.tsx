@@ -11,16 +11,29 @@ type Props = {
     className?: string
     /** Base delay (seconds) before this card's FLIP animation starts. Use to stagger cards. */
     delay?: number
+    /** When false, skips Framer layout projection (e.g. parent drives position). Default true. */
+    enableLayout?: boolean
+    /** Fires once entry FLIP + background fade complete (or immediately if no reel data). */
+    onMorphComplete?: () => void
 }
 
 const SPRING = { type: 'spring', stiffness: 120, damping: 22, mass: 1 } as const
 const FADE_DURATION = 0.35
 const FADE_DELAY = 0.50
 
-export default function MorphCard({ type, children, className, delay = 0 }: Props) {
+export default function MorphCard({
+    type,
+    children,
+    className,
+    delay = 0,
+    enableLayout = true,
+    onMorphComplete,
+}: Props) {
     const { cardSlotRects } = usePhase()
     const reelRect = cardSlotRects?.[type]
     const ref = useRef<HTMLDivElement>(null)
+    const morphCompleteRef = useRef(onMorphComplete)
+    morphCompleteRef.current = onMorphComplete
     const [done, setDone] = useState(false)
     // Hide until measured — prevents a single-frame flash at the layout position
     const [visible, setVisible] = useState(!reelRect)
@@ -36,6 +49,7 @@ export default function MorphCard({ type, children, className, delay = 0 }: Prop
             // No reel data (e.g. hot reload) — just show in place immediately
             setVisible(true)
             setDone(true)
+            queueMicrotask(() => morphCompleteRef.current?.())
             return
         }
 
@@ -68,7 +82,10 @@ export default function MorphCard({ type, children, className, delay = 0 }: Prop
 
         // Mark done when the last animation (background fade) completes
         controls[controls.length - 1].then(() => {
-            if (!cancelled) setDone(true)
+            if (!cancelled) {
+                setDone(true)
+                morphCompleteRef.current?.()
+            }
         })
 
         return () => {
@@ -84,7 +101,7 @@ export default function MorphCard({ type, children, className, delay = 0 }: Prop
             // Only enable layout animations after the entry morph is done,
             // so route-change repositions spring smoothly without interfering
             // with the initial FLIP
-            layout={done}
+            layout={enableLayout && done}
             transition={{ layout: SPRING }}
             className={`pointer-events-auto ${!done ? 'overflow-hidden' : ''} ${className ?? ''}`}
             style={{

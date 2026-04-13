@@ -19,3 +19,17 @@ export const appShellVariants: Variants = {
 }
 
 export const reelSpinEasing: [number, number, number, number] = [0.05, 1, 0.2, 1]
+
+/** Opacity crossfade when switching PictureFrame inner content (hero / projects / contact). */
+export const pictureFrameCrossfade = {
+    duration: 0.5,
+    ease: [0.22, 1, 0.36, 1] as [number, number, number, number],
+}
+
+/** Horizontal slide for the picture-frame column between home and projects/contact. */
+export const cardSlideSpring = {
+    type: 'spring' as const,
+    stiffness: 95,
+    damping: 24,
+    mass: 1,
+}
