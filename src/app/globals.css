@@ -66,6 +66,14 @@ html.dark {
   font-family: 'Daubenton', sans-serif;
 }
 
+@utility font-accent {
+  font-family: 'Cenotaph', sans-serif;
+}
+
+html.dark .font-accent {  
+  font-family: 'dotrice-reg', sans-serif;
+}
+
 html.dark .font-nav {
   font-family: 'dotrice', sans-serif;
 }
@@ -126,5 +134,40 @@ body {
   font-family: 'dotrice';
   src: url('../fonts/dotrice.bold.otf') format('opentype');
   font-weight: 700;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Cenotaph';
+  src: url('../fonts/Cenotaph-Titling.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+}
+
+/* @font-face {
+  font-family: 'star-crush';
+  src: url('../fonts/Star\ Crush.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'blue-screen';
+  src: url('../fonts/Blue\ Screen\ Personal\ Use.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'minisystem';
+  src: url('../fonts/Minisystem.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+} */
+
+@font-face {
+  font-family: 'dotrice-reg';
+  src: url('../fonts/dotrice.regular.otf') format('opentype');
+  font-weight: 400;
   font-style: normal;
 }

@@ -22,6 +22,10 @@ export default function ContactForm({ rarityColor }: Props) {
     const accent = rarityColor ?? 'var(--cs-purple)'
     const disabled = state === 'sending' || state === 'success'
 
+    /** Shared field chrome; focus ring uses --contact-accent from the form (rarity match). */
+    const fieldClassName =
+        'rounded-md border border-item-pane bg-background/80 px-3 py-2 text-sm text-enter-lettering placeholder:text-enter-lettering/45 outline-none focus-visible:ring-2 focus-visible:ring-[color:color-mix(in_srgb,var(--contact-accent)_50%,transparent)] disabled:opacity-60'
+
     async function onSubmit(e: FormEvent) {
         e.preventDefault()
         setErrorText(null)
@@ -60,7 +64,8 @@ export default function ContactForm({ rarityColor }: Props) {
     return (
         <form
             onSubmit={onSubmit}
-            className="flex h-full min-h-0 w-full flex-col gap-4 p-6 text-enter-lettering"
+            className="flex h-full min-h-0 w-full flex-col gap-4 p-6 text-enter-lettering font-nav"
+            style={{ ['--contact-accent' as string]: accent }}
             noValidate
         >
             <div className="flex flex-col gap-1.5">
@@ -78,7 +83,7 @@ export default function ContactForm({ rarityColor }: Props) {
                     placeholder={CONTACT_FORM.placeholders.name}
                     disabled={disabled}
                     required
-                    className="rounded-md border border-item-pane bg-background/80 px-3 py-2 text-sm text-enter-lettering placeholder:text-enter-lettering/45 outline-none focus-visible:ring-2 focus-visible:ring-cs-purple/50 disabled:opacity-60"
+                    className={fieldClassName}
                     aria-invalid={state === 'error' ? true : undefined}
                 />
             </div>
@@ -98,7 +103,7 @@ export default function ContactForm({ rarityColor }: Props) {
                     placeholder={CONTACT_FORM.placeholders.email}
                     disabled={disabled}
                     required
-                    className="rounded-md border border-item-pane bg-background/80 px-3 py-2 text-sm text-enter-lettering placeholder:text-enter-lettering/45 outline-none focus-visible:ring-2 focus-visible:ring-cs-purple/50 disabled:opacity-60"
+                    className={fieldClassName}
                     aria-invalid={state === 'error' ? true : undefined}
                 />
             </div>
@@ -117,7 +122,7 @@ export default function ContactForm({ rarityColor }: Props) {
                     placeholder={CONTACT_FORM.placeholders.message}
                     disabled={disabled}
                     required
-                    className="min-h-[120px] flex-1 resize-y rounded-md border border-item-pane bg-background/80 px-3 py-2 text-sm text-enter-lettering placeholder:text-enter-lettering/45 outline-none focus-visible:ring-2 focus-visible:ring-cs-purple/50 disabled:opacity-60"
+                    className={`min-h-[120px] flex-1 resize-y ${fieldClassName}`}
                     aria-invalid={state === 'error' ? true : undefined}
                 />
             </div>
