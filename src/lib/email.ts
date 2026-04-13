@@ -6,11 +6,13 @@ export type ContactPayload = {
   message: string;
 };
 
-const LIMITS = {
+export const CONTACT_FIELD_LIMITS = {
   name: 200,
   email: 320,
   message: 1500,
-} as const;
+} as const
+
+const LIMITS = CONTACT_FIELD_LIMITS
 
 export function validateContactPayload(
   input: unknown,

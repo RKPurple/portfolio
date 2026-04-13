@@ -1,6 +1,7 @@
 'use client'
 
 import { motion } from 'framer-motion'
+import ContactForm from '@/components/contact/ContactForm'
 
 export type PictureFrameVariant = 'hero' | 'contact' | 'projects'
 
@@ -43,7 +44,7 @@ export default function PictureFrame({ rarityColor, children, variant = 'hero' }
             {variant === 'contact' &&(
                 <div className='relative h-full max-h-full min-h-0 w-auto aspect-[3/4] max-w-full'>
                     {children ?? (
-                        <div className='h-full w-full bg-red-500'/>
+                        <ContactForm rarityColor={rarityColor} />
                     )}
                     <FrameBorder rarityColor={rarityColor} />
                 </div>

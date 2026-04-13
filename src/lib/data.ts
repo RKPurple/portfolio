@@ -62,3 +62,22 @@ export const NAV_LINKS: NavLink[] = [
         href: '/contact',
     }
 ]
+
+export const CONTACT_FORM = {
+    labels: {
+        name: 'Name',
+        email: 'Email',
+        message: 'Message',
+    },
+    placeholders: {
+        name: 'Your Name',
+        email: 'you@example.com',
+        message: 'I want to hire you!',
+    },
+    submit: 'Send',
+    submitting: 'Sending...',
+    success: 'Sent!',
+    errorGeneric: 'Something went wrong, try again.',
+} as const
+
+export const CONTACT_HONEYPOT_FIELD = 'website' as const
