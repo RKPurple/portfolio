@@ -3,32 +3,41 @@
 import { AnimatePresence, motion } from 'framer-motion'
 import { heroVariants } from '@/lib/animations'
 import { usePhase } from '@/context/EnterContext'
+import { useNav } from '@/context/NavContext'
 import EnterOverlay from '@/components/sections/EnterOverlay'
 import CaseSpinSection from '@/components/sections/CaseSpinSection'
 import HeroSection from '@/components/sections/HeroSection'
+import ProjectsSection from '@/components/sections/ProjectsSection'
+import ContactSection from '@/components/sections/ContactSection'
 
 export default function Page() {
   const { phase, setPhase } = usePhase()
+  const { section } = useNav()
 
   return (
     <>
-      {/* Enter Overlay */}
       <AnimatePresence>
         {phase === 'idle' && (
           <EnterOverlay key="enter" onEnter={() => setPhase('spinning')} />
         )}
       </AnimatePresence>
 
-      {/* Case Spin Section */}
       <AnimatePresence>
         {phase === 'spinning' && <CaseSpinSection key="spin" />}
       </AnimatePresence>
 
-      {/* Hero Section — flex-1 so it fills the section slot in ShellLayout */}
-      <AnimatePresence>
+      <AnimatePresence mode="wait">
         {phase === 'completed' && (
-          <motion.div key="hero" variants={heroVariants} initial="initial" animate="animate" className="flex-1 flex flex-col">
-            <HeroSection />
+          <motion.div
+            key={section}
+            variants={heroVariants}
+            initial="initial"
+            animate="animate"
+            className="flex flex-1 flex-col"
+          >
+            {section === 'home' && <HeroSection />}
+            {section === 'projects' && <ProjectsSection />}
+            {section === 'contact' && <ContactSection />}
           </motion.div>
         )}
       </AnimatePresence>

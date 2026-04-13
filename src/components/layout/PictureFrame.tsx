@@ -41,10 +41,19 @@ export default function PictureFrame({ rarityColor, children, variant = 'hero' }
                     <FrameBorder rarityColor={rarityColor} />
                 </div>
             )}
-            {variant === 'contact' &&(
-                <div className='relative h-full max-h-full min-h-0 w-auto aspect-[3/4] max-w-full'>
+            {variant === 'contact' && (
+                <div className="relative h-full max-h-full min-h-0 w-auto aspect-[3/4] max-w-full">
+                    {children ?? <ContactForm rarityColor={rarityColor} />}
+                    <FrameBorder rarityColor={rarityColor} />
+                </div>
+            )}
+            {variant === 'projects' && (
+                <div className="relative h-full max-h-full min-h-0 w-auto max-w-full aspect-[3/4]">
                     {children ?? (
-                        <ContactForm rarityColor={rarityColor} />
+                        <div className="flex h-full w-full flex-col items-center justify-center bg-black/20 text-enter-lettering">
+                            <p className="font-nav text-lg uppercase tracking-widest opacity-80">Projects</p>
+                            <p className="mt-2 text-sm opacity-60">Coming soon</p>
+                        </div>
                     )}
                     <FrameBorder rarityColor={rarityColor} />
                 </div>

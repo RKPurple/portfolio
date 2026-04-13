@@ -1,32 +1,31 @@
 'use client'
 
 import { usePhase } from '@/context/EnterContext'
-import { usePathname } from 'next/navigation'
+import type { PortfolioSection } from '@/context/NavContext'
+import { useNav } from '@/context/NavContext'
 import MorphCard from '@/components/layout/MorphCard'
 import SocialDock from '@/components/layout/SocialDock'
 import PictureFrame, { PictureFrameVariant } from '@/components/layout/PictureFrame'
 import NavDock from '@/components/layout/NavDock'
 import ThemeToggle from '@/components/layout/ThemeToggle'
 
-// Routes where the PictureFrame aside sits on the RIGHT instead of the left.
-// Add new routes here as pages are built — everything else defaults to left.
-const REVERSED_ROUTES = new Set(['/projects', '/contact'])
+// Sections where the PictureFrame aside sits on the RIGHT instead of the left.
+const REVERSED_SECTIONS = new Set<PortfolioSection>(['projects', 'contact'])
 
 type Props = { children: React.ReactNode }
 
-const PICTURE_FRAME_VARIANTS: Record<string, PictureFrameVariant> = {
-    '/': 'hero',
-    '/projects': 'projects',
-    '/contact': 'contact',
+const PICTURE_FRAME_VARIANTS: Record<PortfolioSection, PictureFrameVariant> = {
+    home: 'hero',
+    projects: 'projects',
+    contact: 'contact',
 }
 
 export default function ShellLayout({ children }: Props) {
     const { phase, specialCardsRarities } = usePhase()
-    const pathname = usePathname()
+    const { section } = useNav()
 
     const completed = phase === 'completed'
-    // Only flip the row direction when we're showing the shell
-    const reversed = completed && REVERSED_ROUTES.has(pathname)
+    const reversed = completed && REVERSED_SECTIONS.has(section)
 
     return (
         <div className="h-screen w-screen flex flex-col overflow-hidden">
@@ -46,12 +45,12 @@ export default function ShellLayout({ children }: Props) {
             </header>
 
             {/* ── Main: PictureFrame aside + page content ──────────────────── */}
-            {/* flex-row-reverse on listed routes moves the aside to the right. */}
+            {/* flex-row-reverse on listed sections moves the aside to the right. */}
             {/* Framer's layout prop on MorphCard springs between sides on nav. */}
             <main className={`flex-1 flex ${reversed ? 'flex-row-reverse' : 'flex-row'} items-stretch px-8 pt-8 min-h-0`}>
                 {completed && (
                     <MorphCard type="pictureframe" delay={0.5} className="shrink-0 self-stretch h-full min-h-0">
-                        <PictureFrame variant={PICTURE_FRAME_VARIANTS[pathname]} rarityColor={specialCardsRarities?.pictureframe} />
+                        <PictureFrame variant={PICTURE_FRAME_VARIANTS[section]} rarityColor={specialCardsRarities?.pictureframe} />
                     </MorphCard>
                 )}
 

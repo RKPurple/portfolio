@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { EnterProvider } from '@/context/EnterContext'
 import { ThemeProvider } from '@/context/ThemeContext'
+import { NavProvider } from '@/context/NavContext'
 import "./globals.css";
 import ShellLayout from '@/components/layout/ShellLayout'
 
@@ -35,11 +36,13 @@ export default function RootLayout({
       </head>
       <body>
         <ThemeProvider>
-          <EnterProvider>
-            <ShellLayout>
-              {children}
-            </ShellLayout>
-          </EnterProvider>
+          <NavProvider>
+            <EnterProvider>
+              <ShellLayout>
+                {children}
+              </ShellLayout>
+            </EnterProvider>
+          </NavProvider>
         </ThemeProvider>
       </body>
     </html>

@@ -1,27 +1,21 @@
 'use client'
 
 import Link from 'next/link'
-import { usePathname } from 'next/navigation'
 import { motion } from 'framer-motion'
 import { NAV_LINKS } from '@/lib/data'
-
-function resolveColor(color: string): string {
-    if (typeof window === 'undefined') return color
-    if (!color.startsWith('var(')) return color
-    const varName = color.slice(4, -1).trim()
-    return getComputedStyle(document.documentElement).getPropertyValue(varName).trim()
-}
+import type { PortfolioSection } from '@/context/NavContext'
+import { useNav } from '@/context/NavContext'
 
 type Props = {
     rarityColor?: string
 }
 
 export default function NavDock({ rarityColor }: Props) {
-    const pathname = usePathname()
+    const { section, goToSection } = useNav()
     return (
         <nav className="flex flex-row items-center gap-2 md:gap-5 font-nav text-md md:text-xl text-link-color">
             {NAV_LINKS.map(link => {
-                const isActive = pathname === link.href
+                const isActive = section === link.id
                 return (
                     <motion.div
                         key={link.id}
@@ -29,7 +23,14 @@ export default function NavDock({ rarityColor }: Props) {
                         whileHover={{ y: -4 }}
                         transition={{ type: 'spring', stiffness: 400, damping: 20 }}
                     >
-                        <Link href={link.href}>
+                        <Link
+                            href={link.href}
+                            scroll={false}
+                            onClick={e => {
+                                e.preventDefault()
+                                goToSection(link.id as PortfolioSection)
+                            }}
+                        >
                             {link.label}
                         </Link>
                         <motion.div

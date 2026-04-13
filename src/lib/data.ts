@@ -54,13 +54,13 @@ export const NAV_LINKS: NavLink[] = [
     {
         id: 'projects',
         label: 'PROJECTS',
-        href: '/projects',
+        href: '/#projects',
     },
     {
         id: 'contact',
         label: 'CONTACT',
-        href: '/contact',
-    }
+        href: '/#contact',
+    },
 ]
 
 export const CONTACT_FORM = {
