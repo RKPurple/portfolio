@@ -90,6 +90,13 @@ function VariantInner({
     )
 }
 
+const frameShellClass = (variant: PictureFrameVariant) => {
+    if (variant === 'hero') {
+        return 'relative h-full max-h-full min-h-0 w-auto max-w-full aspect-[3/4] overflow-hidden'
+    }
+    return 'relative h-full max-h-full min-h-0 w-auto max-w-full aspect-[5/4] overflow-hidden '
+}
+
 /** Portrait fills parent height; width follows aspect ratio and shrinks with the column/window. */
 export default function PictureFrame({ rarityColor, children, variant = 'hero' }: Props) {
     const [borderSettled, setBorderSettled] = useState(false)
@@ -100,7 +107,7 @@ export default function PictureFrame({ rarityColor, children, variant = 'hero' }
 
     return (
         <div className="relative flex h-full max-h-full min-h-0 w-full max-w-full justify-center">
-            <div className="relative h-full max-h-full min-h-0 w-auto max-w-full aspect-[3/4] overflow-hidden">
+            <motion.div className={frameShellClass(variant)}>
                 <AnimatePresence initial={false} mode="sync">
                     <motion.div
                         key={variant}
@@ -121,7 +128,7 @@ export default function PictureFrame({ rarityColor, children, variant = 'hero' }
                     borderSettled={borderSettled}
                     onRevealComplete={onBorderRevealComplete}
                 />
-            </div>
+            </motion.div>
         </div>
     )
 }

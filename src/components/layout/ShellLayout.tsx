@@ -102,6 +102,66 @@ function SlidingPictureAside({
     )
 }
 
+type SlidingFooterProps = {
+    containerRef: React.RefObject<HTMLDivElement | null>
+    reversed: boolean
+    rarityColor?: string
+}
+
+/** Theme toggle slides opposite the picture frame: right on hero, left on contact/projects. */
+function SlidingFooterAside({ containerRef, reversed, rarityColor }: SlidingFooterProps) {
+    const cardTrackRef = useRef<HTMLDivElement>(null)
+    const slideX = useMotionValue(0)
+    const hasSnappedSlideOnce = useRef(false)
+    const [morphDone, setMorphDone] = useState(false)
+
+    useLayoutEffect(() => {
+        if (!morphDone) return
+        const track = containerRef.current
+        const card = cardTrackRef.current
+        if (!track || !card) return
+
+        const applySlide = () => {
+            const innerW = track.clientWidth
+            const cardW = card.getBoundingClientRect().width
+            const maxX = Math.max(0, innerW - cardW)
+            const target = reversed ? 0 : maxX
+
+            if (!hasSnappedSlideOnce.current) {
+                slideX.set(target)
+                hasSnappedSlideOnce.current = true
+            } else {
+                animate(slideX, target, cardSlideSpring)
+            }
+        }
+
+        applySlide()
+        const ro = new ResizeObserver(applySlide)
+        ro.observe(track)
+        ro.observe(card)
+        return () => ro.disconnect()
+        // eslint-disable-next-line react-hooks/exhaustive-deps -- slideX is a stable MotionValue
+    }, [containerRef, morphDone, reversed])
+
+    return (
+        <motion.div
+            ref={cardTrackRef}
+            className="absolute left-0 top-0 z-10 flex w-max max-w-full min-w-[12rem]"
+            style={{ x: slideX }}
+        >
+            <MorphCard
+                type="themebutton"
+                delay={0.75}
+                enableLayout={false}
+                className="self-start"
+                onMorphComplete={() => setMorphDone(true)}
+            >
+                <ThemeToggle rarityColor={rarityColor} />
+            </MorphCard>
+        </motion.div>
+    )
+}
+
 export default function ShellLayout({ children }: Props) {
     const { phase, specialCardsRarities } = usePhase()
     const { section } = useNav()
@@ -110,6 +170,7 @@ export default function ShellLayout({ children }: Props) {
     const reversed = completed && REVERSED_SECTIONS.has(section)
 
     const mainRef = useRef<HTMLDivElement>(null)
+    const footerTrackRef = useRef<HTMLDivElement>(null)
     const [contentInset, setContentInset] = useState(0)
 
     return (
@@ -163,13 +224,17 @@ export default function ShellLayout({ children }: Props) {
                 </div>
             </main>
 
-            {/* ── Footer: ThemeToggle right ─────────────────────────────────── */}
-            <footer className="shrink-0 flex justify-end px-8 pb-8">
-                {completed && (
-                    <MorphCard type="themebutton" delay={0.75}>
-                        <ThemeToggle rarityColor={specialCardsRarities?.themebutton} />
-                    </MorphCard>
-                )}
+            {/* ── Footer: ThemeToggle slides — right (hero) / left (contact & projects) ─ */}
+            <footer className="shrink-0 px-8 pb-8">
+                <div ref={footerTrackRef} className="relative min-h-[3rem] w-full">
+                    {completed && (
+                        <SlidingFooterAside
+                            containerRef={footerTrackRef}
+                            reversed={reversed}
+                            rarityColor={specialCardsRarities?.themebutton}
+                        />
+                    )}
+                </div>
             </footer>
 
         </div>

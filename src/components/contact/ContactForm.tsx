@@ -60,7 +60,7 @@ export default function ContactForm({ rarityColor }: Props) {
     return (
         <form
             onSubmit={onSubmit}
-            className="flex h-full min-h-0 w-full flex-col gap-4 p-1 text-enter-lettering"
+            className="flex h-full min-h-0 w-full flex-col gap-4 p-6 text-enter-lettering"
             noValidate
         >
             <div className="flex flex-col gap-1.5">
