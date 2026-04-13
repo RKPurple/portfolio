@@ -4,7 +4,7 @@ import { usePhase } from '@/context/EnterContext'
 import { usePathname } from 'next/navigation'
 import MorphCard from '@/components/layout/MorphCard'
 import SocialDock from '@/components/layout/SocialDock'
-import PictureFrame from '@/components/layout/PictureFrame'
+import PictureFrame, { PictureFrameVariant } from '@/components/layout/PictureFrame'
 import NavDock from '@/components/layout/NavDock'
 import ThemeToggle from '@/components/layout/ThemeToggle'
 
@@ -13,6 +13,12 @@ import ThemeToggle from '@/components/layout/ThemeToggle'
 const REVERSED_ROUTES = new Set(['/projects', '/contact'])
 
 type Props = { children: React.ReactNode }
+
+const PICTURE_FRAME_VARIANTS: Record<string, PictureFrameVariant> = {
+    '/': 'hero',
+    '/projects': 'projects',
+    '/contact': 'contact',
+}
 
 export default function ShellLayout({ children }: Props) {
     const { phase, specialCardsRarities } = usePhase()
@@ -45,7 +51,7 @@ export default function ShellLayout({ children }: Props) {
             <main className={`flex-1 flex ${reversed ? 'flex-row-reverse' : 'flex-row'} items-stretch px-8 pt-8 min-h-0`}>
                 {completed && (
                     <MorphCard type="pictureframe" delay={0.5} className="shrink-0 self-stretch h-full min-h-0">
-                        <PictureFrame rarityColor={specialCardsRarities?.pictureframe} />
+                        <PictureFrame variant={PICTURE_FRAME_VARIANTS[pathname]} rarityColor={specialCardsRarities?.pictureframe} />
                     </MorphCard>
                 )}
 
