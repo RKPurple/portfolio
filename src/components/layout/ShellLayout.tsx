@@ -1,6 +1,6 @@
 'use client'
 
-import { animate, motion, useMotionValue } from 'framer-motion'
+import { animate, LayoutGroup, motion, useMotionValue } from 'framer-motion'
 import { useLayoutEffect, useRef, useState } from 'react'
 import { usePhase } from '@/context/EnterContext'
 import type { PortfolioSection } from '@/context/NavContext'
@@ -37,7 +37,8 @@ type SlidingAsideProps = {
 }
 
 /**
- * md+: absolute column + horizontal slide. < md: in-flow block on top of the section (flex-col stack).
+ * md+: absolute column + horizontal slide. < md: position driven by flex order on parent
+ * (section top / picture bottom for non-home); no translate-Y here.
  */
 function SlidingPictureAside({
     containerRef,
@@ -222,48 +223,66 @@ export default function ShellLayout({ children }: Props) {
             </header>
 
             <main className="relative flex min-h-0 flex-1 flex-col overflow-y-auto pt-8 md:overflow-hidden">
-                <div
-                    ref={mainRef}
-                    className="relative mx-4 flex min-h-0 min-w-0 flex-1 flex-col gap-6 md:mx-8 md:gap-0"
-                >
-                    {completed && (
-                        <div className="order-1 w-full shrink-0 md:absolute md:inset-y-0 md:left-0 md:z-10 md:flex md:w-max md:max-w-full md:items-stretch">
-                            <SlidingPictureAside
-                                containerRef={mainRef}
-                                reversed={reversed}
-                                section={section}
-                                rarityColor={specialCardsRarities?.pictureframe}
-                                onContentInsetChange={setContentInset}
-                                isDesktop={isDesktop}
-                            />
-                        </div>
-                    )}
-
-                    <section
-                        className="order-2 relative z-0 flex min-h-0 min-w-0 flex-1 flex-col self-stretch transition-[padding] duration-0 md:order-none"
-                        style={{
-                            paddingLeft:
-                                isDesktop &&
-                                completed &&
-                                !reversed &&
-                                contentInset > 0
-                                    ? contentInset
-                                    : undefined,
-                            paddingRight:
-                                isDesktop &&
-                                completed &&
-                                reversed &&
-                                contentInset > 0
-                                    ? contentInset
-                                    : undefined,
-                        }}
+                <LayoutGroup>
+                    <div
+                        ref={mainRef}
+                        className="relative mx-4 flex min-h-0 min-w-0 flex-1 flex-col gap-6 md:mx-8 md:gap-0"
                     >
-                        {children}
-                    </section>
-                </div>
+                        {completed && (
+                            <motion.div
+                                layout={!isDesktop}
+                                transition={cardSlideSpring}
+                                className={`w-full shrink-0 md:absolute md:inset-y-0 md:left-0 md:z-10 md:flex md:w-max md:max-w-full md:items-stretch ${
+                                    !isDesktop && section === 'home'
+                                        ? 'order-1'
+                                        : !isDesktop
+                                          ? 'order-2'
+                                          : ''
+                                }`}
+                            >
+                                <SlidingPictureAside
+                                    containerRef={mainRef}
+                                    reversed={reversed}
+                                    section={section}
+                                    rarityColor={specialCardsRarities?.pictureframe}
+                                    onContentInsetChange={setContentInset}
+                                    isDesktop={isDesktop}
+                                />
+                            </motion.div>
+                        )}
+
+                        <section
+                            className={`relative z-0 flex min-h-0 min-w-0 flex-1 flex-col self-stretch transition-[padding] duration-0 md:order-none ${
+                                !isDesktop && section === 'home'
+                                    ? 'order-2'
+                                    : !isDesktop
+                                      ? 'order-1'
+                                      : ''
+                            }`}
+                            style={{
+                                paddingLeft:
+                                    isDesktop &&
+                                    completed &&
+                                    !reversed &&
+                                    contentInset > 0
+                                        ? contentInset
+                                        : undefined,
+                                paddingRight:
+                                    isDesktop &&
+                                    completed &&
+                                    reversed &&
+                                    contentInset > 0
+                                        ? contentInset
+                                        : undefined,
+                            }}
+                        >
+                            {children}
+                        </section>
+                    </div>
+                </LayoutGroup>
             </main>
 
-            <footer className="shrink-0 px-8 pb-8">
+            <footer className="shrink-0 px-4 md:px-8 md:pb-8">
                 <div ref={footerTrackRef} className="relative min-h-[3rem] w-full">
                     {completed && (
                         <SlidingFooterAside
