@@ -64,12 +64,12 @@ export default function ContactForm({ rarityColor }: Props) {
     return (
         <form
             onSubmit={onSubmit}
-            className="flex h-full min-h-0 w-full flex-col gap-4 p-6 text-enter-lettering font-nav"
+            className="flex h-full min-h-0 w-full flex-col gap-4 p-2 md:p-6 text-enter-lettering font-nav"
             style={{ ['--contact-accent' as string]: accent }}
             noValidate
         >
             <div className="flex flex-col gap-1.5">
-                <label htmlFor="contact-name" className="text-sm font-medium opacity-90">
+                <label htmlFor="contact-name" className="hidden md:block text-sm font-medium opacity-90">
                     {CONTACT_FORM.labels.name}
                 </label>
                 <input
@@ -89,7 +89,7 @@ export default function ContactForm({ rarityColor }: Props) {
             </div>
 
             <div className="flex flex-col gap-1.5">
-                <label htmlFor="contact-email" className="text-sm font-medium opacity-90">
+                <label htmlFor="contact-email" className="hidden md:block text-sm font-medium opacity-90">
                     {CONTACT_FORM.labels.email}
                 </label>
                 <input
@@ -109,7 +109,7 @@ export default function ContactForm({ rarityColor }: Props) {
             </div>
 
             <div className="flex min-h-0 flex-1 flex-col gap-1.5">
-                <label htmlFor="contact-message" className="text-sm font-medium opacity-90">
+                <label htmlFor="contact-message" className="hidden md:block text-sm font-medium opacity-90">
                     {CONTACT_FORM.labels.message}
                 </label>
                 <textarea
