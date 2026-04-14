@@ -11,6 +11,7 @@ import PictureFrame, { PictureFrameVariant } from '@/components/layout/PictureFr
 import NavDock from '@/components/layout/NavDock'
 import ThemeToggle from '@/components/layout/ThemeToggle'
 import { cardSlideSpring } from '@/lib/animations'
+import { useIsMdUp } from '@/hooks/useMediaQuery'
 
 // Sections where the PictureFrame aside sits on the RIGHT instead of the left.
 const REVERSED_SECTIONS = new Set<PortfolioSection>(['projects', 'contact'])
@@ -32,11 +33,11 @@ type SlidingAsideProps = {
     section: PortfolioSection
     rarityColor?: string
     onContentInsetChange: (px: number) => void
+    isDesktop: boolean
 }
 
 /**
- * Absolutely positioned picture column; parent supplies the inset track ref for width.
- * Mount only after entry (`completed`) so state resets without a reset effect.
+ * md+: absolute column + horizontal slide. < md: in-flow block on top of the section (flex-col stack).
  */
 function SlidingPictureAside({
     containerRef,
@@ -44,19 +45,32 @@ function SlidingPictureAside({
     section,
     rarityColor,
     onContentInsetChange,
+    isDesktop,
 }: SlidingAsideProps) {
     const cardTrackRef = useRef<HTMLDivElement>(null)
     const slideX = useMotionValue(0)
     const hasSnappedSlideOnce = useRef(false)
+    const prevDesktop = useRef(isDesktop)
     const [morphDone, setMorphDone] = useState(false)
 
     useLayoutEffect(() => {
+        if (prevDesktop.current !== isDesktop) {
+            prevDesktop.current = isDesktop
+            hasSnappedSlideOnce.current = false
+            slideX.set(0)
+        }
         if (!morphDone) return
         const main = containerRef.current
         const card = cardTrackRef.current
         if (!main || !card) return
 
         const applySlide = () => {
+            if (!isDesktop) {
+                slideX.set(0)
+                onContentInsetChange(0)
+                return
+            }
+
             const innerW = main.clientWidth
             const cardW = card.getBoundingClientRect().width
             const maxX = Math.max(0, innerW - cardW)
@@ -77,20 +91,20 @@ function SlidingPictureAside({
         ro.observe(main)
         ro.observe(card)
         return () => ro.disconnect()
-    // eslint-disable-next-line react-hooks/exhaustive-deps -- slideX is a stable MotionValue
-    }, [containerRef, morphDone, onContentInsetChange, reversed, section])
+        // eslint-disable-next-line react-hooks/exhaustive-deps -- slideX is a stable MotionValue
+    }, [containerRef, morphDone, onContentInsetChange, reversed, section, isDesktop])
 
     return (
         <motion.div
             ref={cardTrackRef}
-            className="absolute top-0 bottom-0 left-0 z-10 flex max-h-full min-h-0"
+            className="relative flex w-full shrink-0 justify-center md:h-full md:min-h-0 md:w-full md:max-w-full"
             style={{ x: slideX }}
         >
             <MorphCard
                 type="pictureframe"
                 delay={0.5}
                 enableLayout={false}
-                className="h-full max-h-full min-h-0 self-stretch"
+                className="h-auto w-full min-h-0 max-w-full justify-center md:h-full md:max-h-full md:self-stretch"
                 onMorphComplete={() => setMorphDone(true)}
             >
                 <PictureFrame
@@ -106,22 +120,39 @@ type SlidingFooterProps = {
     containerRef: React.RefObject<HTMLDivElement | null>
     reversed: boolean
     rarityColor?: string
+    isDesktop: boolean
 }
 
-/** Theme toggle slides opposite the picture frame: right on hero, left on contact/projects. */
-function SlidingFooterAside({ containerRef, reversed, rarityColor }: SlidingFooterProps) {
+/** Theme toggle: horizontal slide on md+; centered in footer on mobile. */
+function SlidingFooterAside({
+    containerRef,
+    reversed,
+    rarityColor,
+    isDesktop,
+}: SlidingFooterProps) {
     const cardTrackRef = useRef<HTMLDivElement>(null)
     const slideX = useMotionValue(0)
     const hasSnappedSlideOnce = useRef(false)
+    const prevDesktop = useRef(isDesktop)
     const [morphDone, setMorphDone] = useState(false)
 
     useLayoutEffect(() => {
+        if (prevDesktop.current !== isDesktop) {
+            prevDesktop.current = isDesktop
+            hasSnappedSlideOnce.current = false
+            slideX.set(0)
+        }
         if (!morphDone) return
         const track = containerRef.current
         const card = cardTrackRef.current
         if (!track || !card) return
 
         const applySlide = () => {
+            if (!isDesktop) {
+                slideX.set(0)
+                return
+            }
+
             const innerW = track.clientWidth
             const cardW = card.getBoundingClientRect().width
             const maxX = Math.max(0, innerW - cardW)
@@ -141,12 +172,12 @@ function SlidingFooterAside({ containerRef, reversed, rarityColor }: SlidingFoot
         ro.observe(card)
         return () => ro.disconnect()
         // eslint-disable-next-line react-hooks/exhaustive-deps -- slideX is a stable MotionValue
-    }, [containerRef, morphDone, reversed])
+    }, [containerRef, morphDone, reversed, isDesktop])
 
     return (
         <motion.div
             ref={cardTrackRef}
-            className="absolute left-0 top-0 z-10 flex w-max max-w-full min-w-[12rem]"
+            className="relative z-10 flex w-full justify-center md:absolute md:left-0 md:top-0 md:w-max md:min-w-[12rem] md:justify-start"
             style={{ x: slideX }}
         >
             <MorphCard
@@ -165,6 +196,7 @@ function SlidingFooterAside({ containerRef, reversed, rarityColor }: SlidingFoot
 export default function ShellLayout({ children }: Props) {
     const { phase, specialCardsRarities } = usePhase()
     const { section } = useNav()
+    const isDesktop = useIsMdUp()
 
     const completed = phase === 'completed'
     const reversed = completed && REVERSED_SECTIONS.has(section)
@@ -176,7 +208,6 @@ export default function ShellLayout({ children }: Props) {
     return (
         <div className="h-screen w-screen flex flex-col overflow-hidden">
 
-            {/* ── Header: SocialDock left | NavDock right ─────────────────── */}
             <header className="shrink-0 flex items-end md:items-center justify-between px-4 md:px-8 pt-4 md:pt-8">
                 {completed && (
                     <>
@@ -190,31 +221,39 @@ export default function ShellLayout({ children }: Props) {
                 )}
             </header>
 
-            {/* ── Main: inset track; picture slides on transform x ─────────── */}
-            <main className="relative flex min-h-0 flex-1 flex-col pt-8">
+            <main className="relative flex min-h-0 flex-1 flex-col overflow-y-auto pt-8 md:overflow-hidden">
                 <div
                     ref={mainRef}
-                    className="relative mx-8 flex min-h-0 min-w-0 flex-1 flex-col"
+                    className="relative mx-4 flex min-h-0 min-w-0 flex-1 flex-col gap-6 md:mx-8 md:gap-0"
                 >
                     {completed && (
-                        <SlidingPictureAside
-                            containerRef={mainRef}
-                            reversed={reversed}
-                            section={section}
-                            rarityColor={specialCardsRarities?.pictureframe}
-                            onContentInsetChange={setContentInset}
-                        />
+                        <div className="order-1 w-full shrink-0 md:absolute md:inset-y-0 md:left-0 md:z-10 md:flex md:w-max md:max-w-full md:items-stretch">
+                            <SlidingPictureAside
+                                containerRef={mainRef}
+                                reversed={reversed}
+                                section={section}
+                                rarityColor={specialCardsRarities?.pictureframe}
+                                onContentInsetChange={setContentInset}
+                                isDesktop={isDesktop}
+                            />
+                        </div>
                     )}
 
                     <section
-                        className="flex min-h-0 min-w-0 flex-1 flex-col self-stretch transition-[padding] duration-0"
+                        className="order-2 relative z-0 flex min-h-0 min-w-0 flex-1 flex-col self-stretch transition-[padding] duration-0 md:order-none"
                         style={{
                             paddingLeft:
-                                completed && !reversed && contentInset > 0
+                                isDesktop &&
+                                completed &&
+                                !reversed &&
+                                contentInset > 0
                                     ? contentInset
                                     : undefined,
                             paddingRight:
-                                completed && reversed && contentInset > 0
+                                isDesktop &&
+                                completed &&
+                                reversed &&
+                                contentInset > 0
                                     ? contentInset
                                     : undefined,
                         }}
@@ -224,7 +263,6 @@ export default function ShellLayout({ children }: Props) {
                 </div>
             </main>
 
-            {/* ── Footer: ThemeToggle slides — right (hero) / left (contact & projects) ─ */}
             <footer className="shrink-0 px-8 pb-8">
                 <div ref={footerTrackRef} className="relative min-h-[3rem] w-full">
                     {completed && (
@@ -232,6 +270,7 @@ export default function ShellLayout({ children }: Props) {
                             containerRef={footerTrackRef}
                             reversed={reversed}
                             rarityColor={specialCardsRarities?.themebutton}
+                            isDesktop={isDesktop}
                         />
                     )}
                 </div>

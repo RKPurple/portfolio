@@ -92,9 +92,10 @@ function VariantInner({
 
 const frameShellClass = (variant: PictureFrameVariant) => {
     if (variant === 'hero') {
-        return 'relative h-full max-h-full min-h-0 w-auto max-w-full aspect-[3/4] overflow-hidden'
+        // Mobile: width-driven aspect box (parent is often h-auto). md+: fill MorphCard column.
+        return 'relative aspect-[4/3] md:aspect-[3/4] w-full max-w-full overflow-hidden md:h-full md:max-h-full md:min-h-0 md:w-auto'
     }
-    return 'relative h-full max-h-full min-h-0 w-auto max-w-full aspect-[5/4] overflow-hidden '
+    return 'relative aspect-[5/4] w-full max-w-full overflow-hidden md:h-full md:max-h-full md:min-h-0 md:w-auto'
 }
 
 /** Portrait fills parent height; width follows aspect ratio and shrinks with the column/window. */
@@ -106,7 +107,7 @@ export default function PictureFrame({ rarityColor, children, variant = 'hero' }
     }, [])
 
     return (
-        <div className="relative flex h-[50%] md:h-full max-h-full min-h-0 w-full max-w-full justify-center">
+        <div className="relative flex h-auto w-full max-w-full justify-center md:h-full md:max-h-full md:min-h-0">
             <motion.div className={frameShellClass(variant)}>
                 <AnimatePresence initial={false} mode="sync">
                     <motion.div
