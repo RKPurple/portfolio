@@ -98,7 +98,7 @@ function SlidingPictureAside({
     return (
         <motion.div
             ref={cardTrackRef}
-            className="relative flex w-full shrink-0 justify-center md:h-full md:min-h-0 md:w-full md:max-w-full"
+            className="relative flex w-full shrink-0 justify-center md:pointer-events-none md:h-full md:min-h-0 md:w-full md:max-w-full"
             style={{ x: slideX }}
         >
             <MorphCard
@@ -178,7 +178,9 @@ function SlidingFooterAside({
     return (
         <motion.div
             ref={cardTrackRef}
-            className="relative z-10 flex w-full justify-center md:absolute md:left-0 md:top-0 md:w-max md:min-w-[12rem] md:justify-start"
+            className={`relative z-10 flex w-full justify-center md:absolute md:left-0 md:top-0 md:w-max ${
+                reversed ? 'md:justify-start' : 'md:justify-end'
+            }`}
             style={{ x: slideX }}
         >
             <MorphCard
@@ -232,7 +234,7 @@ export default function ShellLayout({ children }: Props) {
                             <motion.div
                                 layout={!isDesktop}
                                 transition={cardSlideSpring}
-                                className={`w-full shrink-0 md:absolute md:inset-y-0 md:left-0 md:z-10 md:flex md:w-max md:max-w-full md:items-stretch ${
+                                className={`w-full shrink-0 md:pointer-events-none md:absolute md:inset-y-0 md:left-0 md:z-10 md:flex md:w-max md:max-w-full md:items-stretch ${
                                     !isDesktop && section === 'home'
                                         ? 'order-1'
                                         : !isDesktop

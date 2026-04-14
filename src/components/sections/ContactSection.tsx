@@ -9,7 +9,7 @@ export default function ContactSection() {
             {/* Desktop */}
             <div className="md:grid md:grid-cols-2 gap-2 md:gap-4 p-2 md:p-6 hidden">
                 <p className="font-nav text-lg">Email:</p>
-                <a href="mailto:rkallur135@gmail.com" className="font-nav text-xl underline">rkallur135@gmail.com</a>
+                <a href="mailto:rkallur135@gmail.com" rel="noopener noreferrer" className="font-nav text-xl underline">rkallur135@gmail.com</a>
                 <p className="font-nav text-lg">Location:</p>
                 <p className="font-nav text-xl">Colonia, NJ</p>
             </div>
@@ -17,14 +17,14 @@ export default function ContactSection() {
             <div className='flex flex-1 flex-col items-center gap-2 p-2 md:hidden'>
                 <div className='flex flex-row items-center gap-2'>
                     <p className="font-nav text-md">Email:</p>
-                    <a href="mailto:rkallur135@gmail.com" className="font-nav text-md underline">rkallur135@gmail.com</a>
+                    <a href="mailto:rkallur135@gmail.com" rel="noopener noreferrer" className="font-nav text-md underline">rkallur135@gmail.com</a>
                 </div>
                 <div className='flex flex-row items-center gap-2'>
                     <p className="font-nav text-md">Location:</p>
                     <p className="font-nav text-md">Colonia, NJ</p>
                 </div>
             </div>
-            <img src="/assets/mailman.png" alt="" className="w-full h-full object-cover" />
+            <img src="/assets/mailman.png" alt="" className="w-full h-full object-cover"/>
         </div>
     )
 }
