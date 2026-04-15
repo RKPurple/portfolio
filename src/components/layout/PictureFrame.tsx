@@ -82,6 +82,26 @@ function VariantInner({
     if (variant === 'contact') {
         return <ContactForm rarityColor={rarityColor} />
     }
+
+    if (variant === 'projects') {
+        return (
+            <video
+                className="h-full w-full  scale-[1.12] object-cover object-top"
+                autoPlay
+                muted
+                loop
+                playsInline
+                preload="metadata"
+                poster="/projects/redrafter.png"
+                aria-label="Redrafter Demo Recording"
+            >
+                <source src="/projects/redrafter-demo.webm" type="video/webm" />
+                <source src="/projects/redrafter-demo.mp4" type="video/mp4" />
+                Your browser does not support the video tag.
+            </video>
+        )
+    }
+
     return (
         <div className="flex h-full w-full flex-col items-center justify-center bg-black/20 text-enter-lettering">
             <p className="font-nav text-lg uppercase tracking-widest opacity-80">Projects</p>
@@ -95,24 +115,40 @@ const frameShellClass = (variant: PictureFrameVariant) => {
         // Mobile: width-driven aspect box (parent is often h-auto). md+: fill MorphCard column.
         return 'relative aspect-[4/3] md:aspect-[3/4] w-full max-w-full overflow-hidden md:h-full md:max-h-full md:min-h-0 md:w-auto'
     }
+    if (variant === 'projects') {
+        // Keep a deterministic media box so video/image always fill flush to the border.
+        return 'relative aspect-[4/3] w-full max-w-full overflow-hidden md:h-[60vh] md:w-auto'
+    }
     return 'relative aspect-[5/4] w-full max-w-full overflow-hidden md:h-full md:max-h-full md:min-h-0 md:w-auto'
 }
 
 /** Portrait fills parent height; width follows aspect ratio and shrinks with the column/window. */
 export default function PictureFrame({ rarityColor, children, variant = 'hero' }: Props) {
     const [borderSettled, setBorderSettled] = useState(false)
+    const fillShell = variant !== 'projects'
+    const projectsVariant = variant === 'projects'
 
     const onBorderRevealComplete = useCallback(() => {
         setBorderSettled(true)
     }, [])
 
     return (
-        <div className="relative flex h-auto w-full max-w-full justify-center md:h-full md:max-h-full md:min-h-0">
+        <div
+            className={
+                projectsVariant
+                    ? 'relative flex h-auto w-full max-w-full items-start justify-center md:h-full md:max-h-full md:min-h-0 md:items-center'
+                    : 'relative flex h-auto w-full max-w-full justify-center md:h-full md:max-h-full md:min-h-0'
+            }
+        >
             <motion.div className={frameShellClass(variant)}>
                 <AnimatePresence initial={false} mode="sync">
                     <motion.div
                         key={variant}
-                        className="absolute inset-0 flex min-h-0 min-w-0 flex-col"
+                        className={
+                            fillShell
+                                ? 'absolute inset-0 flex min-h-0 min-w-0 flex-col'
+                                : 'relative flex min-h-0 min-w-0 flex-col'
+                        }
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
