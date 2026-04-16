@@ -25,11 +25,11 @@ export type Card = {
 }
 
 export const FILLER_SKINS: Record<RarityId, string[]> = {
-  blue:   ['/spinItems/blue_1.webp'],
-  purple: ['/spinItems/blue_1.webp'],
-  pink:   ['/spinItems/blue_1.webp'],
-  red:    ['/spinItems/blue_1.webp'],
-  gold:   ['/spinItems/blue_1.webp'],
+  blue:   ['/spinItems/blue_1.webp', '/spinItems/blue_2.webp', '/spinItems/blue_3.webp', '/spinItems/blue_4.webp', '/spinItems/blue_5.webp', '/spinItems/blue_6.webp', '/spinItems/blue_7.webp'],
+  purple: ['/spinItems/purple_1.webp', '/spinItems/purple_2.webp', '/spinItems/purple_3.webp', '/spinItems/purple_4.webp', '/spinItems/purple_5.webp'],
+  pink:   ['/spinItems/pink_1.webp', '/spinItems/pink_2.webp', '/spinItems/pink_3.webp'],
+  red:    ['/spinItems/red_1.webp', '/spinItems/red_2.webp'],
+  gold:   ['/spinItems/gold_1.webp'],
 }
 
 export const SPECIAL_CARDS: Card[] = [
