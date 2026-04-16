@@ -13,7 +13,7 @@ type ExperienceCardProps = {
 
 function ExperienceCard({ title, subtitle, timeline, image, misc }: ExperienceCardProps){
     return (
-        <div className="relative flex flex-row items-center gap-5 overflow-hidden rounded-xl border border-item-pane/50 bg-item-pane/15 py-4 pl-5 pr-4 shadow-[inset_0_1px_0_0_rgba(255,255,255,0.06)]">
+        <div className="relative flex flex-row items-center gap-5 overflow-hidden rounded-xl border border-item-pane/50 bg-item-pane/50 py-4 pl-5 pr-4 shadow-[inset_0_1px_0_0_rgba(255,255,255,0.06)]">
             <div
                 className="absolute inset-y-0 left-0 w-1.5 bg-cs-purple"
                 aria-hidden
@@ -108,7 +108,7 @@ function HeroSection() {
                 <div className='flex flex-row items-center gap-4 font-accent text-sm md:text-lg'>
                     <span >Rocks</span>
                     <span >Basketball</span>
-                    <span >Cooking</span>
+                    <span >Film</span>
                     <span >Photography</span>
                 </div>
             </div>
