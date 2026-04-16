@@ -135,7 +135,8 @@ function SlidingFooterAside({
     const slideX = useMotionValue(0)
     const hasSnappedSlideOnce = useRef(false)
     const prevDesktop = useRef(isDesktop)
-    const [morphDone, setMorphDone] = useState(false)
+    /** False until entry FLIP finishes — then we use left+translate like SlidingPictureAside. */
+    const [entryMorphDone, setEntryMorphDone] = useState(false)
 
     useLayoutEffect(() => {
         if (prevDesktop.current !== isDesktop) {
@@ -143,13 +144,18 @@ function SlidingFooterAside({
             hasSnappedSlideOnce.current = false
             slideX.set(0)
         }
-        if (!morphDone) return
         const track = containerRef.current
         const card = cardTrackRef.current
         if (!track || !card) return
 
         const applySlide = () => {
             if (!isDesktop) {
+                slideX.set(0)
+                return
+            }
+            // Entry morph: keep translate at 0. Anchor right (home) or left (contact) in CSS so
+            // MorphCard FLIP measures the real hero edge — same motion from reel as before.
+            if (!entryMorphDone) {
                 slideX.set(0)
                 return
             }
@@ -173,22 +179,30 @@ function SlidingFooterAside({
         ro.observe(card)
         return () => ro.disconnect()
         // eslint-disable-next-line react-hooks/exhaustive-deps -- slideX is a stable MotionValue
-    }, [containerRef, morphDone, reversed, isDesktop])
+    }, [containerRef, reversed, isDesktop, entryMorphDone])
+
+    const desktopEntryMorph = isDesktop && !entryMorphDone
+    const anchorRightDuringEntryMorph = desktopEntryMorph && !reversed
+    const anchorLeftDuringEntryMorph = desktopEntryMorph && reversed
+
+    const trackClassName = [
+        'relative z-10 flex w-full justify-center md:w-max',
+        anchorRightDuringEntryMorph && 'md:absolute md:right-0 md:left-auto md:top-0',
+        anchorLeftDuringEntryMorph && 'md:absolute md:left-0 md:top-0',
+        entryMorphDone && isDesktop && 'md:absolute md:left-0 md:top-0',
+        entryMorphDone && isDesktop && (reversed ? 'md:justify-start' : 'md:justify-end'),
+    ]
+        .filter(Boolean)
+        .join(' ')
 
     return (
-        <motion.div
-            ref={cardTrackRef}
-            className={`relative z-10 flex w-full justify-center md:absolute md:left-0 md:top-0 md:w-max ${
-                reversed ? 'md:justify-start' : 'md:justify-end'
-            }`}
-            style={{ x: slideX }}
-        >
+        <motion.div ref={cardTrackRef} className={trackClassName} style={{ x: slideX }}>
             <MorphCard
                 type="themebutton"
                 delay={0.75}
                 enableLayout={false}
-                className="self-start"
-                onMorphComplete={() => setMorphDone(true)}
+                className="self-end"
+                onMorphComplete={() => setEntryMorphDone(true)}
             >
                 <ThemeToggle rarityColor={rarityColor} />
             </MorphCard>

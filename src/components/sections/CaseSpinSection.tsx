@@ -17,10 +17,10 @@ const SPIN_DURATION = 8 // seconds
 
 function weightedRandom(): RarityId {
     const roll = Math.random() * 100
-    if (roll < 79.92) return 'blue'
-    if (roll < 95.9)  return 'purple'
-    if (roll < 99.1)  return 'pink'
-    if (roll < 99.74) return 'red'
+    if (roll < 65) return 'blue'
+    if (roll < 90)  return 'purple'
+    if (roll < 95)  return 'pink'
+    if (roll < 98) return 'red'
     return 'gold'
 }
 
