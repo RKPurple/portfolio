@@ -11,6 +11,7 @@ import {
 
 /** Align with `NAV_LINKS` ids in `lib/data.ts`. */
 export type PortfolioSection = 'home' | 'projects' | 'contact'
+export type ProjectId = 'redraft' | 'sentinel'
 
 const KNOWN = new Set<PortfolioSection>(['home', 'projects', 'contact'])
 
@@ -34,12 +35,15 @@ export function isNonHomeSection(section: PortfolioSection): boolean {
 type NavContextValue = {
     section: PortfolioSection
     goToSection: (next: PortfolioSection) => void
+    activeProjectId: ProjectId
+    setActiveProjectId: (next: ProjectId) => void
 }
 
 const NavContext = createContext<NavContextValue | null>(null)
 
 export function NavProvider({ children }: { children: React.ReactNode }) {
     const [section, setSection] = useState<PortfolioSection>('home')
+    const [activeProjectId, setActiveProjectId] = useState<ProjectId>('redraft')
 
     useLayoutEffect(() => {
         setSection(getSectionFromLocation())
@@ -68,7 +72,9 @@ export function NavProvider({ children }: { children: React.ReactNode }) {
     }, [])
 
     return (
-        <NavContext.Provider value={{ section, goToSection }}>
+        <NavContext.Provider
+            value={{ section, goToSection, activeProjectId, setActiveProjectId }}
+        >
             {children}
         </NavContext.Provider>
     )

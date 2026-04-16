@@ -4,6 +4,7 @@ import { AnimatePresence, motion } from 'framer-motion'
 import { useCallback, useState } from 'react'
 import ContactForm from '@/components/contact/ContactForm'
 import { pictureFrameCrossfade } from '@/lib/animations'
+import { type ProjectId, useNav } from '@/context/NavContext'
 
 export type PictureFrameVariant = 'hero' | 'contact' | 'projects'
 
@@ -63,10 +64,12 @@ function VariantInner({
     variant,
     rarityColor,
     children,
+    activeProjectId,
 }: {
     variant: PictureFrameVariant
     rarityColor?: string
     children?: React.ReactNode
+    activeProjectId: ProjectId
 }) {
     if (children) return children
 
@@ -84,25 +87,41 @@ function VariantInner({
     }
 
     if (variant === 'projects') {
+        const projectMedia =
+          activeProjectId === 'sentinel'
+            ? {
+                href: 'https://www.netki.com/',
+                poster: '/projects/redrafter.png',
+                webm: '/projects/sentinel.webm',
+                mp4: '/projects/sentinel.mp4',
+                label: 'DeFi Sentinel Demo Recording',
+              }
+            : {
+                href: 'https://redraft-room.onrender.com',
+                poster: '/projects/redrafter.png',
+                webm: '/projects/redrafter-demo.webm',
+                mp4: '/projects/redrafter-demo.mp4',
+                label: 'Redrafter Demo Recording',
+              }
         return (
-            <a href="https://redraft-room.onrender.com" target="_blank" rel="noopener noreferrer">
-                <video
-                    className="h-full w-full object-cover"
-                    autoPlay
-                    muted
-                    loop
-                    playsInline
-                    preload="metadata"
-                    poster="/projects/redrafter.png"
-                    aria-label="Redrafter Demo Recording"
-                >
-                    <source src="/projects/redrafter-demo.webm" type="video/webm" />
-                    <source src="/projects/redrafter-demo.mp4" type="video/mp4" />
-                    Your browser does not support the video tag.
-                </video>
-            </a>
+          <a href={projectMedia.href} target="_blank" rel="noopener noreferrer">
+            <video
+              className="h-full w-full object-cover"
+              autoPlay
+              muted
+              loop
+              playsInline
+              preload="metadata"
+              poster={projectMedia.poster}
+              aria-label={projectMedia.label}
+            >
+              <source src={projectMedia.webm} type="video/webm" />
+              <source src={projectMedia.mp4} type="video/mp4" />
+              Your browser does not support the video tag.
+            </video>
+          </a>
         )
-    }
+      }
 
     return (
         <div className="flex h-full w-full flex-col items-center justify-center bg-black/20 text-enter-lettering">
@@ -129,6 +148,7 @@ export default function PictureFrame({ rarityColor, children, variant = 'hero' }
     const [borderSettled, setBorderSettled] = useState(false)
     const fillShell = variant !== 'projects'
     const projectsVariant = variant === 'projects'
+    const { activeProjectId } = useNav()
 
     const onBorderRevealComplete = useCallback(() => {
         setBorderSettled(true)
@@ -145,7 +165,7 @@ export default function PictureFrame({ rarityColor, children, variant = 'hero' }
             <motion.div className={frameShellClass(variant)}>
                 <AnimatePresence initial={false} mode="sync">
                     <motion.div
-                        key={variant}
+                        key={variant === 'projects' ? `${variant}-${activeProjectId}` : variant}
                         className={
                             fillShell
                                 ? 'absolute inset-0 flex min-h-0 min-w-0 flex-col'
@@ -156,7 +176,7 @@ export default function PictureFrame({ rarityColor, children, variant = 'hero' }
                         exit={{ opacity: 0 }}
                         transition={pictureFrameCrossfade}
                     >
-                        <VariantInner variant={variant} rarityColor={rarityColor}>
+                        <VariantInner variant={variant} rarityColor={rarityColor} activeProjectId={activeProjectId}>
                             {children}
                         </VariantInner>
                     </motion.div>

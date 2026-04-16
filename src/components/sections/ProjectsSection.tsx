@@ -1,17 +1,20 @@
 'use client'
 
-import { useState } from 'react'
+import { type ReactNode, useEffect, useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import Redraft from '@/components/projects/Redraft'
 import Sentinel from '@/components/projects/Sentinel'
+import { type ProjectId, useNav } from '@/context/NavContext'
 
-const PROJECTS = [
+const PROJECTS: Array<{ id: ProjectId; title: string; import: ReactNode; url: string }> = [
     {
+        id: 'redraft',
         title: 'Redraft Room',
         import: <Redraft/>,
         url: 'https://redraft-room.onrender.com'
     },
     {
+        id: 'sentinel',
         title: 'DeFi Sentinel',
         import: <Sentinel/>,
         url: 'https://www.netki.com/'
@@ -20,8 +23,13 @@ const PROJECTS = [
 
 /** Main-column content for the projects section (frame aside shows PictureFrame projects variant). */
 export default function ProjectsSection() {
+    const { setActiveProjectId } = useNav()
     const [index, setIndex] = useState(0)
     const [direction, setDirection] = useState(0)
+
+    useEffect(() => {
+        setActiveProjectId(PROJECTS[index].id)
+    }, [index, setActiveProjectId])
 
     const prev = () => {
         setDirection(-1)
