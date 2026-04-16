@@ -203,6 +203,7 @@ export default function ShellLayout({ children }: Props) {
 
     const completed = phase === 'completed'
     const reversed = completed && REVERSED_SECTIONS.has(section)
+    const themeToggleReversed = completed && section === 'contact'
 
     const mainRef = useRef<HTMLDivElement>(null)
     const footerTrackRef = useRef<HTMLDivElement>(null)
@@ -289,7 +290,7 @@ export default function ShellLayout({ children }: Props) {
                     {completed && (
                         <SlidingFooterAside
                             containerRef={footerTrackRef}
-                            reversed={reversed}
+                            reversed={themeToggleReversed}
                             rarityColor={specialCardsRarities?.themebutton}
                             isDesktop={isDesktop}
                         />
