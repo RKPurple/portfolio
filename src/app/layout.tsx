@@ -18,10 +18,58 @@ const themeInitScript = `
   }
 })();
 `
+const siteUrl = 'https://rohankallur.xyz';
 
 export const metadata: Metadata = {
-  title: "Rohan's Portfolio",
-  description: "Portfolio of Rohan Kallur",
+  metadataBase: new URL(siteUrl),
+
+  title: {
+    default: "Rohan Kallur | Portfolio",
+    template: "%s · Rohan Kallur",
+  },
+
+  description: "Software Engineer - Portfolio, Projects, and Contact.",
+
+  applicationName: "Rohan's Portfolio",
+
+  authors: [{ name: "Rohan Kallur", url: siteUrl }],
+  creator: "Rohan Kallur",
+
+  keywords: [
+    "Rohan kallur",
+    "portfolio",
+    "full-stack",
+    "software engineer",
+    "defi",
+    "web3",
+  ],
+
+  alternates: {
+    canonical: "/",
+  },
+
+  openGraph: {
+    type: 'website',
+    locale: 'en_US',
+    url: '/',
+    siteName: "Rohan's Portfolio",
+    title: "Rohan Kallur | Portfolio",
+    description: "Software Engineer - Portfolio, Projects, and Contact.",
+  },
+
+  twitter: {
+    card: "summary_large_image",
+    title: "Rohan Kallur — Portfolio",
+    description:
+      "Full-stack engineer — portfolio, projects, and contact.",
+    creator: "@rkpurple2",
+    // images: ["/og.png"],
+  },
+
+  robots: {
+    index: true,
+    follow: true,
+  },
 };
 
 export default function RootLayout({
