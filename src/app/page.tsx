@@ -33,7 +33,7 @@ export default function Page() {
             variants={heroVariants}
             initial="initial"
             animate="animate"
-            className="flex flex-1 flex-col"
+            className="flex min-h-0 flex-1 flex-col"
           >
             {section === 'home' && <HeroSection />}
             {section === 'projects' && <ProjectsSection />}

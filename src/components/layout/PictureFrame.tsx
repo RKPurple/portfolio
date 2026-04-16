@@ -85,20 +85,22 @@ function VariantInner({
 
     if (variant === 'projects') {
         return (
-            <video
-                className="h-full w-full  scale-[1.12] object-cover object-top"
-                autoPlay
-                muted
-                loop
-                playsInline
-                preload="metadata"
-                poster="/projects/redrafter.png"
-                aria-label="Redrafter Demo Recording"
-            >
-                <source src="/projects/redrafter-demo.webm" type="video/webm" />
-                <source src="/projects/redrafter-demo.mp4" type="video/mp4" />
-                Your browser does not support the video tag.
-            </video>
+            <a href="https://redraft-room.onrender.com" target="_blank" rel="noopener noreferrer">
+                <video
+                    className="h-full w-full object-cover"
+                    autoPlay
+                    muted
+                    loop
+                    playsInline
+                    preload="metadata"
+                    poster="/projects/redrafter.png"
+                    aria-label="Redrafter Demo Recording"
+                >
+                    <source src="/projects/redrafter-demo.webm" type="video/webm" />
+                    <source src="/projects/redrafter-demo.mp4" type="video/mp4" />
+                    Your browser does not support the video tag.
+                </video>
+            </a>
         )
     }
 
@@ -116,8 +118,8 @@ const frameShellClass = (variant: PictureFrameVariant) => {
         return 'relative aspect-[4/3] md:aspect-[3/4] w-full max-w-full overflow-hidden md:h-full md:max-h-full md:min-h-0 md:w-auto'
     }
     if (variant === 'projects') {
-        // Keep a deterministic media box so video/image always fill flush to the border.
-        return 'relative aspect-[4/3] w-full max-w-full overflow-hidden md:h-[60vh] md:w-auto'
+        // Lock 16:9 so height cap also caps width (~3/4 of old 60vh tall frame); stays balanced.
+        return 'relative mx-auto aspect-video w-full max-w-[min(100%,calc(45vh*16/9))] overflow-hidden'
     }
     return 'relative aspect-[5/4] w-full max-w-full overflow-hidden md:h-full md:max-h-full md:min-h-0 md:w-auto'
 }
