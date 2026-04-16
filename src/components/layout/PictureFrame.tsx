@@ -60,6 +60,34 @@ function FrameBorder({
     )
 }
 
+// Near the top of PictureFrame.tsx (after imports) or above VariantInner:
+const PROJECT_FRAME_MEDIA: Record<
+    ProjectId,
+    { href: string; poster: string; webm: string; mp4: string; label: string }
+> = {
+    redraft: {
+        href: 'https://redraft-room.onrender.com',
+        poster: '/projects/redrafter.png',
+        webm: '/projects/redrafter-demo.webm',
+        mp4: '/projects/redrafter-demo.mp4',
+        label: 'Redrafter Demo Recording',
+    },
+    sentinel: {
+        href: 'https://www.netki.com/',
+        poster: '/projects/redrafter.png',
+        webm: '/projects/sentinel.webm',
+        mp4: '/projects/sentinel.mp4',
+        label: 'DeFi Sentinel Demo Recording',
+    },
+    portfolio: {
+        href: 'https://rohankallur.xyz',
+        poster: '/projects/portfolio.png',
+        webm: '/projects/portfolio.webm',
+        mp4: '/projects/portfolio.mp4',
+        label: 'Portfolio site recording', // or whatever you want for aria-label
+    },
+}
+
 function VariantInner({
     variant,
     rarityColor,
@@ -87,40 +115,25 @@ function VariantInner({
     }
 
     if (variant === 'projects') {
-        const projectMedia =
-          activeProjectId === 'sentinel'
-            ? {
-                href: 'https://www.netki.com/',
-                poster: '/projects/redrafter.png',
-                webm: '/projects/sentinel.webm',
-                mp4: '/projects/sentinel.mp4',
-                label: 'DeFi Sentinel Demo Recording',
-              }
-            : {
-                href: 'https://redraft-room.onrender.com',
-                poster: '/projects/redrafter.png',
-                webm: '/projects/redrafter-demo.webm',
-                mp4: '/projects/redrafter-demo.mp4',
-                label: 'Redrafter Demo Recording',
-              }
+        const projectMedia = PROJECT_FRAME_MEDIA[activeProjectId]
         return (
-          <a href={projectMedia.href} target="_blank" rel="noopener noreferrer">
-            <video
-              className="h-full w-full object-cover scale-110"
-              autoPlay
-              muted
-              loop
-              playsInline
-              preload="metadata"
-              poster={projectMedia.poster}
-              aria-label={projectMedia.label}
-            >
-              <source src={projectMedia.webm} type="video/webm" />
-              <source src={projectMedia.mp4} type="video/mp4" />
-              Your browser does not support the video tag.
-            </video>
-          </a>
-        )
+            <a href={projectMedia.href} target="_blank" rel="noopener noreferrer">
+              <video
+                className="h-full w-full object-cover scale-110"
+                autoPlay
+                muted
+                loop
+                playsInline
+                preload="metadata"
+                poster={projectMedia.poster}
+                aria-label={projectMedia.label}
+              >
+                <source src={projectMedia.webm} type="video/webm" />
+                <source src={projectMedia.mp4} type="video/mp4" />
+                Your browser does not support the video tag.
+              </video>
+            </a>
+          )
       }
 
     return (

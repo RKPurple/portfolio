@@ -19,6 +19,9 @@ const REVERSED_SECTIONS = new Set<PortfolioSection>(['projects', 'contact'])
 /** Horizontal gap between the sliding card column and the page content (px). */
 const CARD_CONTENT_GAP = 24
 
+/** Skip spring when already at target — avoids a second nudge after ResizeObserver reflows. */
+const SLIDE_X_SNAP_EPS = 0.75
+
 type Props = { children: React.ReactNode }
 
 const PICTURE_FRAME_VARIANTS: Record<PortfolioSection, PictureFrameVariant> = {
@@ -83,7 +86,12 @@ function SlidingPictureAside({
                 slideX.set(target)
                 hasSnappedSlideOnce.current = true
             } else {
-                animate(slideX, target, cardSlideSpring)
+                const current = slideX.get()
+                if (Math.abs(current - target) <= SLIDE_X_SNAP_EPS) {
+                    slideX.set(target)
+                } else {
+                    animate(slideX, target, cardSlideSpring)
+                }
             }
         }
 
@@ -169,7 +177,12 @@ function SlidingFooterAside({
                 slideX.set(target)
                 hasSnappedSlideOnce.current = true
             } else {
-                animate(slideX, target, cardSlideSpring)
+                const current = slideX.get()
+                if (Math.abs(current - target) <= SLIDE_X_SNAP_EPS) {
+                    slideX.set(target)
+                } else {
+                    animate(slideX, target, cardSlideSpring)
+                }
             }
         }
 

@@ -11,7 +11,7 @@ import {
 
 /** Align with `NAV_LINKS` ids in `lib/data.ts`. */
 export type PortfolioSection = 'home' | 'projects' | 'contact'
-export type ProjectId = 'redraft' | 'sentinel'
+export type ProjectId = 'redraft' | 'sentinel' | 'portfolio'
 
 const KNOWN = new Set<PortfolioSection>(['home', 'projects', 'contact'])
 
