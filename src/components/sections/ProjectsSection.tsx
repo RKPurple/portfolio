@@ -4,6 +4,7 @@ import { type ReactNode, useEffect, useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import Redraft from '@/components/projects/Redraft'
 import Sentinel from '@/components/projects/Sentinel'
+import Portfolio from '@/components/projects/Portfolio'
 import { type ProjectId, useNav } from '@/context/NavContext'
 
 const PROJECTS: Array<{ id: ProjectId; title: string; import: ReactNode; url: string }> = [
@@ -18,6 +19,12 @@ const PROJECTS: Array<{ id: ProjectId; title: string; import: ReactNode; url: st
         title: 'DeFi Sentinel',
         import: <Sentinel/>,
         url: 'https://www.netki.com/'
+    },
+    {
+        id: 'portfolio',
+        title: 'Portfolio',
+        import: <Portfolio/>,
+        url: 'https://rohankallur.xyz'
     }
 ]
 

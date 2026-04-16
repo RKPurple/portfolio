@@ -106,7 +106,7 @@ function VariantInner({
         return (
           <a href={projectMedia.href} target="_blank" rel="noopener noreferrer">
             <video
-              className="h-full w-full object-cover"
+              className="h-full w-full object-cover scale-110"
               autoPlay
               muted
               loop

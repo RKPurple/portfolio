@@ -4,32 +4,29 @@ import { TECH_STACK, THEME_IMAGES } from '@/lib/data'
 import { useIsLightModeFromHtml } from '@/context/ThemeContext'
 
 const STACK = [
-    'solidity',
-    'python',
-    'django',
-    'web3',
-    'remixide',
-    'truffle',
-    'ganache',
+    'nextjs',
+    'react',
+    'typescript',
+    'tailwind',
+    'framermotion',
+    'vercel',
+    'resend',
 ]
 
-export default function Sentinel() {
+export default function Portfolio() {
     const isLight = useIsLightModeFromHtml()
-    const imageSrc = isLight ? THEME_IMAGES.projects.sentinel.light : THEME_IMAGES.projects.sentinel.dark
+    const imageSrc = isLight ? THEME_IMAGES.projects.portfolio.light : THEME_IMAGES.projects.portfolio.dark
     return (
         <>
             <div className='flex flex-row gap-2'>
-                <button onClick={() => window.open('https://www.netki.com/', '_blank')} className="text-lg md:text-2xl font-nav text-link-color border-3 border-cs-purple px-2 md:px-4 py-1 md:py-2 rounded-md hover:bg-cs-purple hover:text-white hover:cursor-pointer">
-                    Company Website
-                </button>
-                <button onClick={() => window.open('https://github.com/netkicorp/defi-sentinel-token-validators/tree/main/Ethereum', '_blank')} className="text-lg md:text-2xl font-nav text-link-color border-3 border-cs-purple px-2 md:px-4 py-1 md:py-2 rounded-md hover:bg-cs-purple hover:text-white hover:cursor-pointer">
+                <button onClick={() => window.open('https://github.com/RKPurple/portfolio', '_blank')} className="text-lg md:text-2xl font-nav text-link-color border-3 border-cs-purple px-2 md:px-4 py-1 md:py-2 rounded-md hover:bg-cs-purple hover:text-white hover:cursor-pointer">
                     Github Repo
                 </button>
             </div>
             <div className="w-full self-start text-left">
                 <p className="text-lg md:text-2xl font-nav text-link-color underline">Project Overview</p>
                 <p className="text-sm md:text-md font-accent text-link-color">
-                    My summer 2024 internship project. An open source smart contract that consumes and validates hashed tokens embedded during main Sentinel workflow on Ethereum blockchain transactions to check for KYC compliance.
+                    Portfolio website to showcase my projects and experiences. Built to be visually unique and representative of my creativity.
                 </p>
             </div>
             <div className="w-full self-start text-left">
@@ -44,7 +41,7 @@ export default function Sentinel() {
                 </div>
             </div>
             <div className="w-full mt-auto">
-                <img src={imageSrc} alt="Sentinel" className="w-auto object-contain bg-transparent" />
+                <img src={imageSrc} alt="Portfolio" className="w-auto object-contain bg-transparent" />
             </div>
         </>
     )

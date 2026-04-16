@@ -1,9 +1,10 @@
 import type { IconType } from 'react-icons'
-import { SiSolidity, SiWeb3Dotjs, SiDjango, SiGithubactions, SiGooglecloud, SiJirasoftware, SiVite, SiTypescript, SiFastapi, SiPostgresql, SiRender } from "react-icons/si";
+import { SiSolidity, SiWeb3Dotjs, SiDjango, SiGithubactions, SiGooglecloud, SiJirasoftware, SiVite, SiTypescript, SiFastapi, SiPostgresql, SiRender, SiResend } from "react-icons/si";
 import { FaReact, FaPython, FaDocker } from "react-icons/fa";
 import { RiTailwindCssLine, RiNextjsLine, RiFirebaseFill, RiVercelLine } from "react-icons/ri";
 import { VscGithub } from "react-icons/vsc";
 import { DiJavascript } from "react-icons/di";
+import { TbBrandFramerMotion } from "react-icons/tb";
 import React from "react";
 
 interface TechStackDetails {
@@ -123,8 +124,10 @@ export const TECH_STACK: TechStackDetails[] = [
     { id: "nextjs", icon: React.createElement(RiNextjsLine), title: "Next.js" },
     { id: "tailwind", icon: React.createElement(RiTailwindCssLine), title: "Tailwind CSS" },
     { id: "vite", icon: React.createElement(SiVite), title: "Vite" },
-
-    // Backend Frameworks
+    { id: 'framermotion', icon: React.createElement(TbBrandFramerMotion), title: "Framer Motion"},
+    
+    // Backend Frameworks & APIs
+    { id: 'resend', icon: React.createElement(SiResend), title: "Resend API"},
     { id: "django", icon: React.createElement(SiDjango), title: "Django" },
     { id: "fastapi", icon: React.createElement(SiFastapi), title: "FastAPI" },
     { id: "web3", icon: React.createElement(SiWeb3Dotjs), title: "Web3.js" },
@@ -153,3 +156,39 @@ export const TECH_STACK: TechStackDetails[] = [
 ];
 
 export const CONTACT_HONEYPOT_FIELD = 'website' as const
+
+export type ThemeAsset = {
+    dark: string
+    light: string
+}
+
+export const THEME_IMAGES = {
+    contact: {
+        dark: '/assets/mailman-dark.png',
+        light: '/assets/mailman-light.png',
+    },
+    projects: {
+        redraft: {
+            dark: '/assets/rodman-dark.png',
+            light: '/assets/rodman-light.png',
+        },
+        sentinel: {
+            dark: '/assets/sentinel-dark.png',
+            light: '/assets/sentinel-light.png',
+        },
+        portfolio: {
+            dark: '/assets/portfolio-dark.png',
+            light: '/assets/portfolio-light.png',
+        },
+    },
+    home: {
+        netki: {
+            dark: '/assets/netki-dark.png',
+            light: '/assets/netki-light.png',
+        },
+        stevens: {
+            dark: '/assets/stevens-dark.png',
+            light: '/assets/stevens-light.png',
+        },
+    }
+}

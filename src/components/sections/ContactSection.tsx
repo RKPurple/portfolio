@@ -1,7 +1,12 @@
 'use client'
 
+import { THEME_IMAGES } from '@/lib/data'
+import { useIsLightModeFromHtml } from '@/context/ThemeContext'
+
 /** Main-column copy for contact; the form lives in PictureFrame on this section. */
 export default function ContactSection() {
+    const isLight = useIsLightModeFromHtml()
+    const imageSrc = isLight ? THEME_IMAGES.contact.light : THEME_IMAGES.contact.dark
     return (
         <div className="flex flex-1 flex-col items-center h-full w-full md:p-4">
             <h1 className="font-nav text-3xl md:text-5xl uppercase tracking-widest">Contact Me</h1>
@@ -24,7 +29,7 @@ export default function ContactSection() {
                     <p className="font-nav text-md">Colonia, NJ</p>
                 </div>
             </div>
-            <img src="/assets/mailman.png" alt="" className="w-full h-full object-cover"/>
+            <img src={imageSrc} alt="Contact" className="w-full h-full object-cover"/>
         </div>
     )
 }

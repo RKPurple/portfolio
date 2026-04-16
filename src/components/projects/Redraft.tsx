@@ -1,6 +1,7 @@
 'use client'
 
-import { TECH_STACK } from '@/lib/data'
+import { TECH_STACK, THEME_IMAGES } from '@/lib/data'
+import { useIsLightModeFromHtml } from '@/context/ThemeContext'
 
 const STACK = [
     'react',
@@ -14,6 +15,8 @@ const STACK = [
 ]
 
 export default function Redraft() {
+    const isLight = useIsLightModeFromHtml()
+    const imageSrc = isLight ? THEME_IMAGES.projects.redraft.light : THEME_IMAGES.projects.redraft.dark
     return (
         <>
             <button onClick={() => window.open('https://github.com/RKPurple/redrafter', '_blank')} className="text-lg md:text-2xl font-nav text-link-color border-3 border-cs-purple px-2 md:px-4 py-1 md:py-2 rounded-md hover:bg-cs-purple hover:text-white hover:cursor-pointer">
@@ -29,7 +32,7 @@ export default function Redraft() {
                 <p className="text-lg md:text-2xl font-nav text-link-color underline">Tech Used</p>
                 <div className="mt-2 flex flex-row flex-wrap items-center gap-x-2 md:gap-x-4 gap-y-1 md:gap-y-2">
                     {STACK.map((tech: string) => (
-                        <div key={tech} className="flex flex-row items-center gap-2 font-accent text-lg">
+                        <div key={tech} className="flex flex-row items-center gap-2 font-accent text-md">
                             {TECH_STACK.find((t) => t.id === tech)?.icon}
                             <p>{TECH_STACK.find((t) => t.id === tech)?.title}</p>
                         </div>
@@ -37,7 +40,7 @@ export default function Redraft() {
                 </div>
             </div>
             <div className="w-full mt-auto">
-                <img src="/assets/rodman.png" alt="Dennis Rodman" className="w-auto object-contain bg-transparent" />
+                <img src={imageSrc} alt="Dennis Rodman" className="w-auto object-contain bg-transparent" />
             </div>
         </>
     )

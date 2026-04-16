@@ -1,5 +1,8 @@
 'use client'
 
+import { THEME_IMAGES } from '@/lib/data'
+import { useIsLightModeFromHtml } from '@/context/ThemeContext'
+
 type ExperienceCardProps = {
     title: string
     subtitle: string
@@ -48,6 +51,9 @@ function ExperienceCard({ title, subtitle, timeline, image, misc }: ExperienceCa
 // No spacers needed — ShellLayout's flex structure handles clearance
 // from the PictureFrame aside automatically.
 function HeroSection() {
+    const isLight = useIsLightModeFromHtml()
+    const netkiImageSrc = isLight ? THEME_IMAGES.home.netki.light : THEME_IMAGES.home.netki.dark
+    const stevensImageSrc = isLight ? THEME_IMAGES.home.stevens.light : THEME_IMAGES.home.stevens.dark
     return (
         <div className="flex-1 flex flex-col items-center gap-1 md:gap-4 w-full h-full">
             <h1 className="text-3xl md:text-5xl font-bold font-nav">Rohan Kallur</h1>
@@ -85,13 +91,13 @@ function HeroSection() {
                             subtitle="B.S. in Computer Science"
                             misc="Minor in Finance"
                             timeline={{ start: '2021', end: '2025' }}
-                            image={{ src: '/assets/stevens.png' }}
+                            image={{ src: stevensImageSrc }}
                         />
                         <ExperienceCard
                             title="Netki"
                             subtitle="Software Development Intern"
                             timeline={{ start: 'May 2024', end: 'Aug 2024' }}
-                            image={{ src: '/assets/netki.png' }}
+                            image={{ src: netkiImageSrc }}
                         />
                     </div>
                 </div>
