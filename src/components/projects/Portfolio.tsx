@@ -22,6 +22,9 @@ export default function Portfolio() {
                 <button onClick={() => window.open('https://github.com/RKPurple/portfolio', '_blank')} className="text-lg md:text-2xl font-nav text-link-color border-3 border-cs-purple px-2 md:px-4 py-1 md:py-2 rounded-md hover:bg-cs-purple hover:text-white hover:cursor-pointer">
                     Github Repo
                 </button>
+                <button onClick={() => window.open('https://rk-purple.vercel.app', '_blank')} className="text-lg md:text-2xl font-nav text-link-color border-3 border-cs-purple px-2 md:px-4 py-1 md:py-2 rounded-md hover:bg-cs-purple hover:text-white hover:cursor-pointer">
+                    Old Portfolio
+                </button>
             </div>
             <div className="w-full self-start text-left">
                 <p className="text-lg md:text-2xl font-nav text-link-color underline">Project Overview</p>
