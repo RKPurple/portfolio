@@ -7,23 +7,35 @@ import Sentinel from '@/components/projects/Sentinel'
 import Portfolio from '@/components/projects/Portfolio'
 import { type ProjectId, useNav } from '@/context/NavContext'
 
+const titleLinkVariants = {
+    initial: (dir: number) => ({ opacity: 0, x: dir * 20 }),
+    animate: { opacity: 1, x: 0 },
+    exit: (dir: number) => ({ opacity: 0, x: dir * -20 }),
+}
+
+const projectPanelVariants = {
+    initial: (dir: number) => ({ opacity: 0, x: dir * 30 }),
+    animate: { opacity: 1, x: 0 },
+    exit: (dir: number) => ({ opacity: 0, x: dir * -30 }),
+}
+
 const PROJECTS: Array<{ id: ProjectId; title: string; import: ReactNode; url: string }> = [
     {
         id: 'redraft',
         title: 'Redraft Room',
-        import: <Redraft/>,
+        import: <Redraft />,
         url: 'https://redraft-room.onrender.com'
     },
     {
         id: 'sentinel',
         title: 'DeFi Sentinel',
-        import: <Sentinel/>,
+        import: <Sentinel />,
         url: 'https://www.netki.com/'
     },
     {
         id: 'portfolio',
         title: 'Portfolio',
-        import: <Portfolio/>,
+        import: <Portfolio />,
         url: 'https://rohankallur.xyz'
     }
 ]
@@ -55,15 +67,11 @@ export default function ProjectsSection() {
                 <button onClick={prev} className='hover:opacity-70 hover:cursor-pointer'>←</button>
                 <AnimatePresence mode="wait" initial={false} custom={direction}>
                     <motion.a
-                        key={current.title}
-                        href={current.url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="font-nav text-link-color uppercase hover:underline"
                         custom={direction}
-                        initial={(dir: number) => ({ opacity: 0, x: dir * 20 })}
-                        animate={{ opacity: 1, x: 0 }}
-                        exit={(dir: number) => ({ opacity: 0, x: dir * -20 })}
+                        variants={titleLinkVariants}
+                        initial="initial"
+                        animate="animate"
+                        exit="exit"
                         transition={{ duration: 0.25, ease: 'easeInOut' }}
                     >
                         {current.title}
@@ -76,9 +84,10 @@ export default function ProjectsSection() {
                     key={current.title}
                     className="flex flex-1 flex-col items-center gap-5 w-full"
                     custom={direction}
-                    initial={(dir: number) => ({ opacity: 0, x: dir * 30 })}
-                    animate={{ opacity: 1, x: 0 }}
-                    exit={(dir: number) => ({ opacity: 0, x: dir * -30 })}
+                    variants={projectPanelVariants}
+                    initial="initial"
+                    animate="animate"
+                    exit="exit"
                     transition={{ duration: 0.3, ease: 'easeInOut' }}
                 >
                     {current.import}
