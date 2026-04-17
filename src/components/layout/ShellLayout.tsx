@@ -262,7 +262,7 @@ export default function ShellLayout({ children }: Props) {
                             <motion.div
                                 layout={!isDesktop}
                                 transition={cardSlideSpring}
-                                className={`w-full shrink-0 md:pointer-events-none md:absolute md:inset-y-0 md:left-0 md:z-10 md:flex md:w-max md:max-w-full md:items-stretch ${
+                                className={`relative z-20 w-full shrink-0 md:pointer-events-none md:absolute md:inset-y-0 md:left-0 md:z-20 md:flex md:w-max md:max-w-full md:items-stretch ${
                                     !isDesktop && section === 'home'
                                         ? 'order-1'
                                         : !isDesktop
