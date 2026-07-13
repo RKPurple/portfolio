@@ -9,15 +9,16 @@ type ExperienceCardProps = {
     timeline: { start: string, end: string }
     image: { src: string; alt?: string }
     misc?: string
+    href?: string
 }
 
-function ExperienceCard({ title, subtitle, timeline, image, misc }: ExperienceCardProps){
-    return (
-        <div className="relative flex flex-row items-center gap-5 overflow-hidden rounded-xl border border-item-pane/50 bg-item-pane/50 py-4 pl-5 pr-4 shadow-[inset_0_1px_0_0_rgba(255,255,255,0.06)]">
-            <div
-                className="absolute inset-y-0 left-0 w-1.5 bg-cs-purple"
-                aria-hidden
-            />
+function ExperienceCard({ title, subtitle, timeline, image, misc, href }: ExperienceCardProps) {
+    const className =
+        'relative flex flex-row items-center gap-5 overflow-hidden rounded-xl border border-item-pane/50 bg-item-pane/50 py-4 pl-5 pr-4 shadow-[inset_0_1px_0_0_rgba(255,255,255,0.06)]' +
+        (href ? ' cursor-pointer transition-opacity hover:opacity-90' : '')
+    const body = (
+        <>
+            <div className="absolute inset-y-0 left-0 w-1.5 bg-cs-purple" aria-hidden />
             <div className="flex shrink-0 flex-col items-center gap-1 pl-2.5">
                 <span className="font-nav text-xs tabular-nums leading-none text-cs-purple">
                     {timeline.start}
@@ -28,9 +29,7 @@ function ExperienceCard({ title, subtitle, timeline, image, misc }: ExperienceCa
                 </span>
             </div>
             <div className="min-w-0 flex-1 space-y-1">
-                <p className="font-nav text-base leading-snug text-cs-purple">
-                    {title}
-                </p>
+                <p className="font-nav text-base leading-snug text-cs-purple">{title}</p>
                 <p className="font-accent text-base text-foreground">{subtitle}</p>
                 {misc != null && misc !== '' && (
                     <p className="font-accent text-sm text-foreground/55">{misc}</p>
@@ -43,8 +42,16 @@ function ExperienceCard({ title, subtitle, timeline, image, misc }: ExperienceCa
                     className="h-20 w-20 object-contain opacity-90"
                 />
             </div>
-        </div>
+        </>
     )
+    if (href) {
+        return (
+            <a href={href} target="_blank" rel="noopener noreferrer" className={className}>
+                {body}
+            </a>
+        )
+    }
+    return <div className={className}>{body}</div>
 }
 
 // HeroSection fills the content slot in ShellLayout's <section>.
@@ -54,6 +61,7 @@ function HeroSection() {
     const isLight = useIsLightModeFromHtml()
     const netkiImageSrc = isLight ? THEME_IMAGES.home.netki.light : THEME_IMAGES.home.netki.dark
     const stevensImageSrc = isLight ? THEME_IMAGES.home.stevens.light : THEME_IMAGES.home.stevens.dark
+    const avawatzImageSrc = isLight ? THEME_IMAGES.home.avawatz.light : THEME_IMAGES.home.avawatz.dark
     return (
         <div className="flex-1 flex flex-col items-center gap-1 md:gap-4 w-full h-full">
             <h1 className="text-3xl md:text-5xl font-bold font-nav">Rohan Kallur</h1>
@@ -64,8 +72,7 @@ function HeroSection() {
 
                 <div className="flex flex-col gap-1 md:gap-3 text-left">
                     <p className="font-accent text-sm md:text-base leading-relaxed text-foreground">
-                        Hi, I'm Rohan — a versatile software engineer who recently graduated from
-                        Stevens Institute of Technology.
+                        Hi, I'm Rohan — a software engineer currently working at AvaWatz, building ML-powered solutions.
                     </p>
 
                     <p className="font-accent text-sm leading-relaxed text-foreground/85">
@@ -73,9 +80,9 @@ function HeroSection() {
                     </p>
 
                     <ul className="list-inside list-disc space-y-1.5 pl-0.5 font-accent text-sm leading-relaxed text-foreground/85 marker:text-cs-purple">
-                    <li>DeFi / Smart Contract Development</li>
                     <li>AI R&D</li>
                     <li>Full-stack development</li>
+                    <li>DeFi / Smart Contract Development</li>
                     </ul>
 
                     <p className="font-accent text-sm font-medium leading-relaxed text-foreground">
@@ -87,17 +94,25 @@ function HeroSection() {
                     <p className="w-full text-center font-accent text-lg">Education and Experience</p>
                     <div className="flex w-full flex-col gap-4">
                         <ExperienceCard
-                            title="Stevens Institute of Technology"
-                            subtitle="B.S. in Computer Science"
-                            misc="Minor in Finance"
-                            timeline={{ start: '2021', end: '2025' }}
-                            image={{ src: stevensImageSrc }}
+                            title="AvaWatz"
+                            subtitle="Software Engineer"
+                            timeline={{ start: 'May 2026', end: 'Present' }}
+                            image={{ src: avawatzImageSrc }}
+                            href="https://www.avawatz.com"
                         />
                         <ExperienceCard
                             title="Netki"
                             subtitle="Software Development Intern"
                             timeline={{ start: 'May 2024', end: 'Aug 2024' }}
                             image={{ src: netkiImageSrc }}
+                            href="https://www.netki.com"
+                        />
+                        <ExperienceCard
+                            title="Stevens Institute of Technology"
+                            subtitle="B.S. in Computer Science"
+                            misc="Minor in Finance"
+                            timeline={{ start: '2021', end: '2025' }}
+                            image={{ src: stevensImageSrc }}
                         />
                     </div>
                 </div>

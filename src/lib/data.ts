@@ -190,5 +190,9 @@ export const THEME_IMAGES = {
             dark: '/assets/stevens-dark.png',
             light: '/assets/stevens-light.png',
         },
+        avawatz: {
+            dark: '/assets/avawatz-dark.png',
+            light: '/assets/avawatz-light.png',
+        }
     }
 }
